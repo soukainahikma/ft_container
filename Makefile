@@ -3,7 +3,7 @@ SRC =	main.cpp\
 		ft_vector.cpp\
 
 HEADERS = ./ft_vector.hpp\
-		
+			./iterator.hpp\
 
 
 all: $(NAME) $(HEADERS)
