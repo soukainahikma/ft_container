@@ -8,16 +8,16 @@ int main ()
 {
 	using namespace ft;
 	std::vector<int> test;
-	for (size_t i = 0; i < 5; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
-		test.push_back(i);
+		test.push_back(100);
 	}
 	ft::ft_vector<int> a(3,100);
-	ft::ft_vector<int> b;
-	// my__wrap_iter<int *> it;
-	iter_container<ft_vector<int> *> it;
-	std::__wrap_iter<int> it2;
-	std::vector<int>::iterator it4;
-	// it = test.begin();
-	// std::cout << *it << std::endl;
+	ft::ft_vector<int>::_iterator it = a.begin();
+	++it;
+	--it;
+	a[2] = 10;
+	std::cout << a[2] << std::endl;
+
+	
 }

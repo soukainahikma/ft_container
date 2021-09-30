@@ -1,19 +1,8 @@
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
-#include<iterator>
-/* template <class Category,  class T,class Distance = ptrdiff_t,class Pointer = T*,class Reference = T& >
-struct struct_Iterator_traits
-{
-	typedef T         value_type;
-	typedef Distance  difference_type;
-	typedef Pointer   pointer;
-	typedef Reference reference;
-	typedef Category  iterator_category;
-	
-}; */
 
 template<class _Category, class _Tp, class _Distance = ptrdiff_t, class _Pointer = _Tp*, class _Reference = _Tp&>
-struct my_iterator
+struct my_iterator_traits
 {
     typedef _Tp        value_type;
     typedef _Distance  difference_type;
@@ -22,9 +11,32 @@ struct my_iterator
     typedef _Category  iterator_category;
 };
 template<typename T>
-class iter_container:my_iterator<std::random_access_iterator_tag,T,std::ptrdiff_t, T*,T&>
+class my__wrap_iter // :my_iterator_traits<std::random_access_iterator_tag,T,std::ptrdiff_t, T*,T&>
 {
 		public:
+			// typedef T* pointer;
+			my__wrap_iter(){};// default constructor
+			my__wrap_iter(T* ptr){
+				ptr_toIter = ptr;
+			};// parametrized constructor
+			// my__wrap_iter(const my__wrap_iter<T>& rawIterator){};// copy constructor
+			~my__wrap_iter(){};
+			// my__wrap_iter<T>&  operator=(const my__wrap_iter<T>& rawIterator){};
+			T& operator*() const{
+				return *ptr_toIter;
+			}
+			my__wrap_iter operator++()
+			{
+				(ptr_toIter)++;
+				return(*this);
+			}
+			my__wrap_iter operator--()
+			{
+				(ptr_toIter)--;
+				return(*this);
+			}
+		protected:
+			T* ptr_toIter;
 };
 #endif
 
