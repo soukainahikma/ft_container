@@ -1,8 +1,8 @@
 NAME = ft_container
 SRC =	main.cpp\
-		ft_vector.cpp\
+		vector.cpp\
 
-HEADERS = ./ft_vector.hpp\
+HEADERS = ./vector.hpp\
 			./iterator.hpp\
 
 

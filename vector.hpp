@@ -1,35 +1,37 @@
-#ifndef FT_VECTOR_HPP
-#define FT_VECTOR_HPP
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 #include <iostream>
 #include "iterator.hpp"
 #include <algorithm>
 namespace ft
 {
 	template <typename T>
-	class ft_vector
-	{
+	class vector
+	{	
+
 		private:
 		 std::allocator<T> dataAlloc;
 		 T *vec;
+		 int _number_of_elements;
 		public:
-			ft_vector(){} // default
-			ft_vector(int number_of_elements , T val)
+			vector(){} // default
+			vector(int number_of_elements , T val)// parametrized 
 			{
-				vec = dataAlloc.allocate(number_of_elements);
+				_number_of_elements = number_of_elements;
 				for (int i = 0; i < number_of_elements; i++)
 					vec[i] = val;
 			}
-
-			// parametrized 
-			// ft_vector() {} // range of iterators 
-			// ft_vector(){} // copy constructor
-			~ft_vector(){
+			// vector() {} // range of iterators 
+			// vector(){} // copy constructor
+			~vector(){
 				/* This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator. */
 			}
-			typedef my__wrap_iter<T> _iterator;
-			typedef const my__wrap_iter<T> const_iterator;
-			_iterator begin(){return(_iterator(&vec[0]));};
+			typedef _iterator<T> iterator;
+		typedef const _iterator<T> const_iterator;
+			iterator begin(){return(iterator(&vec[0]));};
+			iterator end(){return(iterator(&vec[_number_of_elements - 1]));};
 			const_iterator begin() const {return(const_iterator(&vec[0]));};
+			const_iterator end() const {return(const_iterator(&vec[_number_of_elements - 1]));};
 
 			//operators
 			T &operator[](unsigned int i){

@@ -1,73 +1,98 @@
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
 
-template<class _Category, class _Tp, class _Distance = ptrdiff_t, class _Pointer = _Tp*, class _Reference = _Tp&>
-struct my_iterator_traits
+template<typename Iter>
+struct iterator_traits
 {
-    typedef _Tp        value_type;
-    typedef _Distance  difference_type;
-    typedef _Pointer   pointer;
-    typedef _Reference reference;
-    typedef _Category  iterator_category;
+    typedef ptrdiff_t difference_type;
+    typedef Iter value_type;
+    typedef Iter* pointer;
+    typedef Iter& reference;
+    typedef std::random_access_iterator_tag iterator_category;
 };
 template<typename T>
-class my__wrap_iter // :my_iterator_traits<std::random_access_iterator_tag,T,std::ptrdiff_t, T*,T&>
+class _iterator
 {
+	typedef typename iterator_traits<T>::value_type  value_type ;
+	typedef typename iterator_traits<T>::difference_type  difference_type ;
+	typedef typename iterator_traits<T>::pointer  pointer ;
+	typedef typename iterator_traits<T>::reference  reference ;
+	typedef typename iterator_traits<T>::iterator_category  iterator_category ;
+
 		public:
-			// typedef T* pointer;
-			my__wrap_iter(){};// default constructor
-			my__wrap_iter(T* ptr){
+///////////******************************************************CONSTRUCTORS********************************************************************
+			_iterator(){};
+			_iterator(T* ptr)// parametrized constructor
+			{
 				ptr_toIter = ptr;
-			};// parametrized constructor
-			// my__wrap_iter(const my__wrap_iter<T>& rawIterator){};// copy constructor
-			~my__wrap_iter(){};
-			// my__wrap_iter<T>&  operator=(const my__wrap_iter<T>& rawIterator){};
-			T& operator*() const{
+			};
+			_iterator(const _iterator<T>& rawIterator)// copy constructor
+			{
+				*this = rawIterator;
+			};
+			~_iterator(){};
+///////////*************************************************OPERATORS*************************************************************************
+			_iterator<T>&  operator=(const _iterator<T>& rawIterator)//see if we have to use std:: allocate or new
+			{
+				ptr_toIter = new T;
+				this->ptr_toIter = rawIterator.ptr_toIter;
+				return(*this);
+			};
+			T& operator*() const
+			{
 				return *ptr_toIter;
 			}
-			my__wrap_iter operator++()
+			_iterator operator++()
 			{
 				(ptr_toIter)++;
 				return(*this);
 			}
-			my__wrap_iter operator--()
+			_iterator operator--()
 			{
 				(ptr_toIter)--;
 				return(*this);
+			}
+
+			_iterator operator + (difference_type a)
+			{
+				this->ptr_toIter = this->ptr_toIter + a;
+				return(*this);
+			}
+
+			_iterator operator - (difference_type a)
+			{
+				this->ptr_toIter = this->ptr_toIter - a;
+					return(*this);
+			}
+			_iterator operator += (difference_type a)
+			{
+				this->ptr_toIter += a;
+				return(*this);
+			}
+
+			_iterator operator -= (difference_type a)
+			{
+				this->ptr_toIter -=a;
+					return(*this);
+			}
+			_iterator operator--(int)
+			{	
+				_iterator result;
+				result = *this;
+				this->ptr_toIter--;
+				return(result);
+			}
+			_iterator operator++(int)
+			{	
+				_iterator result;
+				result = *this;
+				this->ptr_toIter++;
+				return(result);
+			}
+			T &operator[](unsigned int i){
+					return this->ptr_toIter[i];
 			}
 		protected:
 			T* ptr_toIter;
 };
 #endif
-
-/* 
-Construct a class template iterator that has:
-
-member atributes:
-		iterator_category
-		velue_type
-		difference_type
-		pointer
-		reference
-constructors:
-		parameterized with value_type
-		copy constructor
-		deconstructor
-operators:
-		=
-		bool (we ll see about this one)
-		+=
-		-=
-		++
-		--
-		+
-		-
-		(and other operators)
-		*
-		geters(for the ptr and const ptr)
-private attribute:
-	the pointer of the chosen data
-
- */
-
-// and another class for the reverse iterator

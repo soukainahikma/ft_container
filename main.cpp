@@ -1,5 +1,5 @@
 
-#include "ft_vector.hpp"
+#include "vector.hpp"
 #include "iterator.hpp"
 #include<iterator>
 #include <vector>
@@ -10,14 +10,13 @@ int main ()
 	std::vector<int> test;
 	for (size_t i = 0; i < 3; i++)
 	{
-		test.push_back(100);
+		test.push_back(i);
 	}
-	ft::ft_vector<int> a(3,100);
-	ft::ft_vector<int>::_iterator it = a.begin();
-	++it;
-	--it;
-	a[2] = 10;
-	std::cout << a[2] << std::endl;
+	ft::vector<int> a(3,3);
+	ft::vector<int>::iterator itb = a.begin();
+	ft::vector<int>::iterator ite = a.end();
+	std::cout << "|begin()|"<< *itb << std::endl;
+	std::cout << "|  end()|"<< *ite << std::endl;
 
 	
 }
