@@ -3,6 +3,8 @@
 #include "iterator.hpp"
 #include<iterator>
 #include <vector>
+#include <type_traits>
+
 
 int main ()
 {
@@ -22,6 +24,6 @@ int main ()
 	std::cout << "|begin()|"<< *itb << std::endl;
 	std::cout << "|end()  |"<< *ite << std::endl;
 	std::cout << "|Allocation max size|"<<test.max_size();
+	std::vector<int>::iterator it_test;
 
-	
 }

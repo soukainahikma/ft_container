@@ -12,7 +12,14 @@ namespace ft
 			std::allocator<T> dataAlloc;
 			T *vec;
 			int _number_of_elements;
+		
+		
 		public:
+			typedef _iterator<T> iterator;
+			typedef const _iterator<T> const_iterator;
+			typedef const _reverseiterator<T> reverse_iterator; 
+			typedef const _reverseiterator<T> const_reverse_iterator;
+			typedef typename std::allocator<T>::size_type size_type;
 			vector(){} // default
 			vector(int number_of_elements , T val)// parametrized 
 			{
@@ -26,11 +33,7 @@ namespace ft
 			~vector(){
 				/* This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator. */
 			}
-			typedef _iterator<T> iterator;
-			typedef const _iterator<T> const_iterator;
-			typedef const _reverseiterator<T> reverse_iterator; 
-			typedef const _reverseiterator<T> const_reverse_iterator;
-			typedef size_t size_type;
+			
 			iterator begin(){return(iterator(&vec[0]));};
 			iterator end(){return(iterator(&vec[_number_of_elements - 1]));};
 			const_iterator begin() const {return(const_iterator(&vec[0]));};
