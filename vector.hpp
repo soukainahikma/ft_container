@@ -28,7 +28,7 @@ namespace ft
 				for (int i = 0; i < number_of_elements; i++)
 					vec[i] = val;
 			}
-			// vector() {} // range of iterators 
+			// vector() {} // range of iterators
 			// vector(){} // copy constructor
 			~vector(){
 				/* This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator. */
@@ -51,7 +51,6 @@ namespace ft
 				// else
 					return this->vec[i];
 			}
-
 	};
 }
 #endif
