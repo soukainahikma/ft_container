@@ -2,8 +2,8 @@ NAME = ft_container
 SRC =	main.cpp\
 		vector.cpp\
 
-HEADERS = ./vector.hpp\
-			./iterator.hpp\
+HEADERS = ./vector_test.hpp\
+			./iterator_test.hpp\
 
 
 all: $(NAME) $(HEADERS)

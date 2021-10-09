@@ -1,0 +1,34 @@
+In file included from main.cpp:2:
+./vector_test.hpp:32:27: error: no matching conversion for functional-style cast from 'ft::vector<int, std::__1::allocator<int> >::value_type *' (aka 'int *') to 'ft::vector<int, std::__1::allocator<int> >::iterator' (aka '_iterator<int *>')
+                iterator begin(){return(iterator(&vec[0]));};
+                                        ^~~~~~~~~~~~~~~~
+main.cpp:15:36: note: in instantiation of member function 'ft::vector<int, std::__1::allocator<int> >::begin' requested here
+        ft::vector<int>::iterator itb = a.begin();
+                                          ^
+./iterator_test.hpp:66:4: note: candidate constructor not viable: no known conversion from 'ft::vector<int, std::__1::allocator<int> >::value_type *' (aka 'int *') to 'int **' for 1st argument
+                        _iterator(Iterator* ptr)// parametrized constructor
+                        ^
+./iterator_test.hpp:70:4: note: candidate constructor not viable: no known conversion from 'ft::vector<int, std::__1::allocator<int> >::value_type *' (aka 'int *') to 'const _iterator<int *>' for 1st argument
+                        _iterator(const _iterator<Iterator>& rawIterator)// copy constructor
+                        ^
+./iterator_test.hpp:65:4: note: candidate constructor not viable: requires 0 arguments, but 1 was provided
+                        _iterator(){};
+                        ^
+In file included from main.cpp:2:
+./vector_test.hpp:33:25: error: no matching conversion for functional-style cast from 'ft::vector<int, std::__1::allocator<int> >::value_type *' (aka 'int *') to 'ft::vector<int, std::__1::allocator<int> >::iterator' (aka '_iterator<int *>')
+                iterator end(){return(iterator(&vec[_number_of_elements - 1]));};
+                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+main.cpp:16:36: note: in instantiation of member function 'ft::vector<int, std::__1::allocator<int> >::end' requested here
+        ft::vector<int>::iterator ite = a.end();
+                                          ^
+./iterator_test.hpp:66:4: note: candidate constructor not viable: no known conversion from 'ft::vector<int, std::__1::allocator<int> >::value_type *' (aka 'int *') to 'int **' for 1st argument
+                        _iterator(Iterator* ptr)// parametrized constructor
+                        ^
+./iterator_test.hpp:70:4: note: candidate constructor not viable: no known conversion from 'ft::vector<int, std::__1::allocator<int> >::value_type *' (aka 'int *') to 'const _iterator<int *>' for 1st argument
+                        _iterator(const _iterator<Iterator>& rawIterator)// copy constructor
+                        ^
+./iterator_test.hpp:65:4: note: candidate constructor not viable: requires 0 arguments, but 1 was provided
+                        _iterator(){};
+                        ^
+2 errors generated.
+make: *** [ft_container] Error 1
