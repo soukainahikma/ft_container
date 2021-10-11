@@ -62,6 +62,7 @@ namespace ft
 			T &operator[](unsigned int i){
 					return this->vec[i];
 			}
+			
 	};
 }
 #endif

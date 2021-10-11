@@ -51,13 +51,6 @@ struct __iterator
 template<class Iterator>
 class _iterator
 {
-	// typedef typename iterator_traits<Iterator>::value_type  value_type ;
-	// typedef typename iterator_traits<Iterator>::difference_type  difference_type ;
-	// typedef typename iterator_traits<Iterator>::pointer  pointer ;
-	// typedef typename iterator_traits<Iterator>::reference  reference ;
-	// typedef typename iterator_traits<Iterator>::iterator_category  iterator_category ;
-
-
 	typedef Iterator                                            iterator_type;
     typedef typename iterator_traits<Iterator>::difference_type difference_type;
     typedef typename iterator_traits<Iterator>::reference       reference;
@@ -132,95 +125,102 @@ class _iterator
 				this->ptr_toIter++;
 				return(result);
 			}
-			Iterator &operator[](unsigned int i){
+			reference operator[](unsigned int i){
 					return this->ptr_toIter[i];
 			}
 			Iterator *operator->(){return(this->ptr_toIter);}
+
+			bool operator == (const _iterator rawIterator)
+			{
+				return(ptr_toIter == rawIterator.ptr_toIter);
+			}
+			bool operator != (const _iterator rawIterator)
+			{
+				return(ptr_toIter != rawIterator.ptr_toIter );
+			}
 		protected:
 			pointer ptr_toIter;
 };
 
-// template<typename T>
-// class _reverseiterator: public _iterator<T>
-// {
-// 		typedef typename iterator_traits<T>::value_type  value_type ;
-// 		typedef typename iterator_traits<T>::difference_type  difference_type ;
-// 		typedef typename iterator_traits<T>::pointer  pointer ;
-// 		typedef typename iterator_traits<T>::reference  reference ;
-// 		typedef typename iterator_traits<T>::iterator_category  iterator_category ;
+template<class Iterator>
+class _reverseiterator: public _iterator<Iterator>
+{
+	typedef Iterator                                            iterator_type;
+    typedef typename iterator_traits<Iterator>::difference_type difference_type;
+    typedef typename iterator_traits<Iterator>::reference       reference;
+    typedef typename iterator_traits<Iterator>::pointer         pointer;
 
-// 		public:
+		public:
 // ///////////******************************************************CONSTRUCTORS********************************************************************
-// 			_reverseiterator(){};
-// 			_reverseiterator(T* ptr)// parametrized constructor
-// 			{
-// 				this->ptr_toIter = ptr;
-// 			};
-// 			_reverseiterator(const _reverseiterator<T>& rawIterator)// copy constructor
-// 			{
-// 				*this = rawIterator;
-// 			};
-// 			~_reverseiterator(){};
+			_reverseiterator(){};
+			_reverseiterator(pointer ptr)// parametrized constructor
+			{
+				this->ptr_toIter = ptr;
+			};
+			_reverseiterator(const _reverseiterator<Iterator>& rawIterator)// copy constructor
+			{
+				*this = rawIterator;
+			};
+			~_reverseiterator(){};
 // ///////////*************************************************OPERATORS*************************************************************************
-// 			_reverseiterator<T>&  operator=(const _reverseiterator<T>& rawIterator)//see if we have to use std:: allocate or new
-// 			{
-// 				this->ptr_toIter = new T;
-// 				this->ptr_toIter = rawIterator.ptr_toIter;
-// 				return(*this);
-// 			};
-// 			T& operator*() const
-// 			{
-// 				return *(this->ptr_toIter);
-// 			}
-// 			_reverseiterator operator++()
-// 			{
-// 				(this->ptr_toIter)--;
-// 				return(*this);
-// 			}
-// 			_reverseiterator operator--()
-// 			{
-// 				(this->ptr_toIter)++;
-// 				return(*this);
-// 			}
+			_reverseiterator<Iterator>&  operator=(const _reverseiterator<Iterator>& rawIterator)//see if we have to use std:: allocate or new
+			{
+				this->ptr_toIter = rawIterator.ptr_toIter;
+				return(*this);
+			};
+			reference operator*() const
+			{
+				return *(this->ptr_toIter);
+			}
+			_reverseiterator operator++()
+			{
+				(this->ptr_toIter)--;
+				return(*this);
+			}
+			_reverseiterator operator--()
+			{
+				(this->ptr_toIter)++;
+				return(*this);
+			}
 
-// 			_reverseiterator operator + (difference_type a)
-// 			{
-// 				this->ptr_toIter = this->ptr_toIter - a;
-// 				return(*this);
-// 			}
+			_reverseiterator operator + (difference_type a)
+			{
+				this->ptr_toIter = this->ptr_toIter - a;
+				return(*this);
+			}
 
-// 			_reverseiterator operator - (difference_type a)
-// 			{
-// 				this->ptr_toIter = this->ptr_toIter + a;
-// 					return(*this);
-// 			}
-// 			_reverseiterator operator += (difference_type a)
-// 			{
-// 				this->ptr_toIter -= a;
-// 				return(*this);
-// 			}
+			_reverseiterator operator - (difference_type a)
+			{
+				this->ptr_toIter = this->ptr_toIter + a;
+					return(*this);
+			}
+			_reverseiterator operator += (difference_type a)
+			{
+				this->ptr_toIter -= a;
+				return(*this);
+			}
 
-// 			_reverseiterator operator -= (difference_type a)
-// 			{
-// 				this->ptr_toIter +=a;
-// 					return(*this);
-// 			}
-// 			_reverseiterator operator--(int)
-// 			{	
-// 				_reverseiterator result;
-// 				result = *this;
-// 				this->ptr_toIter++;
-// 				return(result);
-// 			}
-// 			_reverseiterator operator++(int)
-// 			{	
-// 				_reverseiterator result;
-// 				result = *this;
-// 				this->ptr_toIter--;
-// 				return(result);
-// 			}
-// 			T &operator[](unsigned int i){
-// 					return this->ptr_toIter[i];
-// 			}
-// };
+			_reverseiterator operator -= (difference_type a)
+			{
+				this->ptr_toIter +=a;
+					return(*this);
+			}
+			_reverseiterator operator--(int)
+			{	
+				_reverseiterator result;
+				result = *this;
+				this->ptr_toIter++;
+				return(result);
+			}
+			_reverseiterator operator++(int)
+			{	
+				_reverseiterator result;
+				result = *this;
+				this->ptr_toIter--;
+				return(result);
+			}
+			Iterator &operator[](unsigned int i){
+					return this->ptr_toIter[i];
+			}
+};
 #endif
