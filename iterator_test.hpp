@@ -51,15 +51,18 @@ struct __iterator
 template<class Iterator>
 class _iterator
 {
-	typedef Iterator                                            iterator_type;
-    typedef typename iterator_traits<Iterator>::difference_type difference_type;
-    typedef typename iterator_traits<Iterator>::reference       reference;
-    typedef typename iterator_traits<Iterator>::pointer         pointer;
+	public:
+		typedef Iterator                                            iterator_type;
+		typedef typename iterator_traits<iterator_type>::value_type value_type;
+		typedef typename iterator_traits<iterator_type>::iterator_category iterator_category;
+    	typedef typename iterator_traits<iterator_type>::difference_type difference_type;
+    	typedef typename iterator_traits<iterator_type>::reference       reference;
+    	typedef typename iterator_traits<iterator_type>::pointer         pointer;
 
 		public:
 ///////////******************************************************CONSTRUCTORS********************************************************************
 			_iterator(){};
-			_iterator(pointer ptr)// parametrized constructor
+			_iterator(iterator_type ptr)// parametrized constructor
 			{
 				ptr_toIter = ptr;
 			};
@@ -138,24 +141,26 @@ class _iterator
 			{
 				return(ptr_toIter != rawIterator.ptr_toIter );
 			}
-		protected:
-			pointer ptr_toIter;
+		private:
+			iterator_type ptr_toIter;
 };
 
 template<class Iterator>
-class _reverseiterator: public _iterator<Iterator>
+class _reverseiterator/* : public _iterator<Iterator> */
 {
-	typedef Iterator                                            iterator_type;
-    typedef typename iterator_traits<Iterator>::difference_type difference_type;
-    typedef typename iterator_traits<Iterator>::reference       reference;
-    typedef typename iterator_traits<Iterator>::pointer         pointer;
+	typedef Iterator													iterator_type;
+	typedef typename iterator_traits<iterator_type>::iterator_category	iterator_category;
+	typedef typename iterator_traits<iterator_type>::value_type			value_type;
+    typedef typename iterator_traits<iterator_type>::difference_type	difference_type;
+    typedef typename iterator_traits<iterator_type>::reference			reference;
+    typedef typename iterator_traits<iterator_type>::pointer			pointer;
 
 		public:
 // ///////////******************************************************CONSTRUCTORS********************************************************************
 			_reverseiterator(){};
-			_reverseiterator(pointer ptr)// parametrized constructor
+			_reverseiterator(iterator_type it)// parametrized constructor
 			{
-				this->ptr_toIter = ptr;
+				this->ptr_toIter = it;
 			};
 			_reverseiterator(const _reverseiterator<Iterator>& rawIterator)// copy constructor
 			{
@@ -183,16 +188,20 @@ class _reverseiterator: public _iterator<Iterator>
 				return(*this);
 			}
 
-			_reverseiterator operator + (difference_type a)
+			_reverseiterator operator + (difference_type a) const
 			{
-				this->ptr_toIter = this->ptr_toIter - a;
-				return(*this);
+				_reverseiterator<iterator_type> tmp;
+				tmp = *this;
+				tmp.ptr_toIter = tmp.ptr_toIter - a;
+				return(tmp);
 			}
 
-			_reverseiterator operator - (difference_type a)
+			_reverseiterator operator - (difference_type a) const
 			{
-				this->ptr_toIter = this->ptr_toIter + a;
-					return(*this);
+				_reverseiterator<iterator_type> tmp;
+				tmp = *this;
+				tmp.ptr_toIter = tmp.ptr_toIter + a;
+				return(tmp);
 			}
 			_reverseiterator operator += (difference_type a)
 			{
@@ -219,8 +228,11 @@ class _reverseiterator: public _iterator<Iterator>
 				this->ptr_toIter--;
 				return(result);
 			}
-			Iterator &operator[](unsigned int i){
+			reference operator[](difference_type i){
 					return this->ptr_toIter[i];
 			}
+			//Dereference iterator operator->
+	private:
+		iterator_type ptr_toIter;
 };
 #endif

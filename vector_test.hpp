@@ -17,9 +17,9 @@ namespace ft
 			typedef typename allocator_type::const_pointer				const_pointer;
 
 			typedef _iterator<pointer>									iterator;
-			typedef _reverseiterator<pointer>							reverse_iterator;
+			typedef _reverseiterator<iterator>							reverse_iterator;
 			typedef const _iterator<pointer>							const_iterator;
-			typedef const _reverseiterator<pointer>							const_reverse_iterator;
+			typedef const _reverseiterator<const_iterator>						const_reverse_iterator;
 			typedef typename iterator_traits<pointer>::difference_type	difference_type;
 			typedef typename allocator_type::size_type					size_type;
 			vector(){
