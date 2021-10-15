@@ -23,6 +23,7 @@ namespace ft
 			typedef typename allocator_type::size_type					size_type;
 			vector (const allocator_type& alloc = allocator_type())
 			{
+				_capacity = allocator_type_.max_size();
 				allocator_type_ = alloc;
 				_number_of_elements = 0;
 				vec = allocator_type_.allocate(0);
@@ -30,6 +31,7 @@ namespace ft
 			}
 			vector (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type())// parametrized 
 			{
+				_capacity = allocator_type_.max_size();
 				allocator_type_ = alloc;// remember to do an explicite casting
 				vec = allocator_type_.allocate(n);
 				_number_of_elements = n;
@@ -71,7 +73,35 @@ namespace ft
 			const_reverse_iterator rbegin()const {return(const_reverse_iterator(&vec[_number_of_elements - 1]));};
 			/* **************************capacity************************ */
 			size_type size() const{return(_number_of_elements);};
-			size_type max_size() const{return(allocator_type_.max_size());};
+			size_type max_size() const
+			{
+				// to review
+				return(_capacity);
+			};
+			void resize (size_type n, value_type val = value_type())
+			{
+				size_type cp = max_size();
+				size_type size_ = size();
+
+				// if (n < size_)
+				// {
+				// 	// reduce to the first n elements(destroy those beyond)
+				// }
+				if(n > size_)
+				{
+					if(n > cp)
+					{
+						_capacity *=  2;
+						// reallocate another array 
+						// swap them there is a non member function called swap that i have to implement later
+					}
+					while(_number_of_elements < n)
+					{
+						vec[_number_of_elements] = val;
+						_number_of_elements++;
+					}
+				}
+			}
 			/* **************************operators************************ */
 			
 			friend int distance_(iterator first, iterator last)
@@ -90,11 +120,21 @@ namespace ft
 			{
 						return this->vec[i];
 			}
+
+
+
+			void swap (vector& x)
+			{
+				vector a;
+				a = this->vec;
+				this->vec = x;
+				x = a; 
+			}
 		private:
 			allocator_type	allocator_type_;
 			pointer vec;
-			int _number_of_elements;
-			int _capacity;
+			size_type _number_of_elements;
+			size_type _capacity;
 
 	};
 }

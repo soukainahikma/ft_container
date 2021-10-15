@@ -14,33 +14,14 @@ int main ()
 		test.push_back(i);
 	}
 	ft::vector<int> a(4,3);
-	for (size_t i = 0; i < 4; i++)
+	for (size_t i = 0; i < a.size(); i++)
 	{
 		a[i] = a[i] + i;
 		std::cout << "this "<< a[i]<< std::endl;
 	}
-	
-	
-	// std::cout << "|begin()|"<< *itb << std::endl;
-	// std::cout << "|end()  |"<< *ite << std::endl;
-	// ite = ite - 2;
-	// if(itb != ite)
-	// 	std::cout << ite[0] << std::endl;
-	ft::vector<int> new_(a);
-	ft::vector<int>::iterator itb  = new_.begin();
-	ft::vector<int>::iterator ite = new_.end();
-	// std::cout << *itb<<std::endl;
-	// itb++;
-	// std::cout << *itb<<std::endl;
-	while(itb != ite)
+	a.resize(6, 55);
+	for (size_t i = 0; i < a.size(); i++)
 	{
-		// std::cout << *itb<< std::endl;
-		itb++;
+		std::cout << "after resize    "<< a[i]<< std::endl;
 	}
-	
-	// std::reverse_iterator<int>::
-	// std::cout << "|end() +1|"<< *ite << std::endl;
-	// std::cout << "|Allocation max size|"<<test.max_size()<< std::endl;
-	// std::cout << a.distance_(itb,ite) << std::endl;
-	// std::cout << "|begin()|"<< *itb << std::endl;
 }
