@@ -1,13 +1,13 @@
 
 
-#include "vector_test.hpp"
-#include "iterator_test.hpp"
+#include "vector.hpp"
+#include "iterator.hpp"
 #include<iterator>
 #include <vector>
 
 int main ()
 {
-	using namespace ft;
+	// using namespace ft;
 	std::vector<int> test;
 	for (size_t i = 0; i < 3; i++)
 	{
@@ -17,16 +17,26 @@ int main ()
 	for (size_t i = 0; i < 4; i++)
 	{
 		a[i] = a[i] + i;
-		std::cout << a[i]<< std::endl;
+		std::cout << "this "<< a[i]<< std::endl;
 	}
-	ft::vector<int>::reverse_iterator itb (a.rbegin());
-	ft::vector<int>::reverse_iterator ite = a.rend();
 	
 	
-	std::cout << "|begin()|"<< *itb << std::endl;
-	std::cout << "|end()  |"<< *ite << std::endl;
-	ite = ite - 2;
-	std::cout << ite[0] << std::endl;
+	// std::cout << "|begin()|"<< *itb << std::endl;
+	// std::cout << "|end()  |"<< *ite << std::endl;
+	// ite = ite - 2;
+	// if(itb != ite)
+	// 	std::cout << ite[0] << std::endl;
+	ft::vector<int> new_(a);
+	ft::vector<int>::iterator itb  = new_.begin();
+	ft::vector<int>::iterator ite = new_.end();
+	// std::cout << *itb<<std::endl;
+	// itb++;
+	// std::cout << *itb<<std::endl;
+	while(itb != ite)
+	{
+		// std::cout << *itb<< std::endl;
+		itb++;
+	}
 	
 	// std::reverse_iterator<int>::
 	// std::cout << "|end() +1|"<< *ite << std::endl;

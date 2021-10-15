@@ -1,7 +1,7 @@
-#ifndef VECTOR_TEST_HPP
-#define VECTOR_TEST_HPP
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 #include <iostream>
-#include "iterator_test.hpp"
+#include "iterator.hpp"
 #include <iterator>
 namespace ft
 {
@@ -15,15 +15,15 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;  
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-
 			typedef _iterator<pointer>									iterator;
 			typedef _reverseiterator<iterator>							reverse_iterator;
 			typedef const _iterator<pointer>							const_iterator;
-			typedef const _reverseiterator<const_iterator>						const_reverse_iterator;
-			typedef typename iterator_traits<pointer>::difference_type	difference_type;
+			typedef const _reverseiterator<const_iterator>				const_reverse_iterator;
+			typedef typename iterator_traits<iterator>::difference_type	difference_type;
 			typedef typename allocator_type::size_type					size_type;
-			vector(){
-
+			vector (const allocator_type& alloc = allocator_type())
+			{
+				allocator_type_ = alloc;
 				_number_of_elements = 0;
 				vec = allocator_type_.allocate(0);
 				vec = nullptr;
@@ -36,7 +36,29 @@ namespace ft
 				for (size_type i = 0; i < n; i++)
 					vec[i] = val;
 			}
-			//need a copy constructor here
+			// template <class InputIterator> // ImputIterator needs an enable_if to work for some cases
+			vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
+			{
+				allocator_type_ = alloc;
+				_number_of_elements = distance_(first,last);
+				int i = 0;
+				vec = allocator_type_.allocate(_number_of_elements);
+				while(first !=  last)
+				{
+					vec[i] = *first;
+					i++;
+					first++;
+				}
+			}
+			vector (const vector& x){
+				_number_of_elements = x.size();
+				vec = allocator_type_.allocate(_number_of_elements);
+				for (int i = 0; i < _number_of_elements; i++)
+				{
+					vec[i] = x.vec[i];
+				}
+				
+			}
 			~vector(){}
 			/* **************************iterators************************ */
 			iterator begin(){return(iterator(vec));};
@@ -51,21 +73,22 @@ namespace ft
 			size_type size() const{return(_number_of_elements);};
 			size_type max_size() const{return(allocator_type_.max_size());};
 			/* **************************operators************************ */
-			T &operator[](unsigned int i){
-						return this->vec[i];
-				}
-			int distance_(iterator first, iterator last)
+			
+			friend int distance_(iterator first, iterator last)
 			{
 				int i = 0;
 				while(first != last)
 				{
-					std::cout << first[i] << std::endl;
 					first++;
 					i++;
 				}
 				if(first == last)
 					i++;
 				return(i);
+			}
+			T &operator[](unsigned int i)
+			{
+						return this->vec[i];
 			}
 		private:
 			allocator_type	allocator_type_;
