@@ -23,7 +23,7 @@ namespace ft
 			typedef typename allocator_type::size_type					size_type;
 			vector (const allocator_type& alloc = allocator_type())
 			{
-				_capacity = allocator_type_.max_size();
+				_capacity = 0;
 				allocator_type_ = alloc;
 				_number_of_elements = 0;
 				vec = allocator_type_.allocate(0);
@@ -31,18 +31,19 @@ namespace ft
 			}
 			vector (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type())// parametrized 
 			{
-				_capacity = allocator_type_.max_size();
 				allocator_type_ = alloc;// remember to do an explicite casting
 				vec = allocator_type_.allocate(n);
 				_number_of_elements = n;
 				for (size_type i = 0; i < n; i++)
 					vec[i] = val;
+				_capacity = n;
 			}
 			// template <class InputIterator> // ImputIterator needs an enable_if to work for some cases
 			vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
 			{
 				allocator_type_ = alloc;
 				_number_of_elements = distance_(first,last);
+				_capacity = _number_of_elements;
 				int i = 0;
 				vec = allocator_type_.allocate(_number_of_elements);
 				while(first !=  last)
@@ -76,24 +77,36 @@ namespace ft
 			size_type max_size() const
 			{
 				// to review
-				return(_capacity);
+				return(allocator_type_.max_size());
 			};
 			void resize (size_type n, value_type val = value_type())
 			{
-				size_type cp = max_size();
+				size_type cp = _capacity;
 				size_type size_ = size();
 
-				// if (n < size_)
-				// {
-				// 	// reduce to the first n elements(destroy those beyond)
-				// }
+				if (n < size_)
+				{
+					while(size_ > n)
+					{
+						allocator_type_.destroy(vec + size_);
+						size_--;
+					}
+					_number_of_elements = n;
+				}
 				if(n > size_)
 				{
 					if(n > cp)
 					{
+						pointer arr;
+						arr = allocator_type_.allocate(_capacity);
+						for(size_type i = 0; i< size(); i++ )
+							arr[i]= vec[i] + 1;
+						allocator_type_.deallocate(vec,size());
+						vec = arr;
 						_capacity *=  2;
 						// reallocate another array 
 						// swap them there is a non member function called swap that i have to implement later
+						// comeback later to this function while testing
 					}
 					while(_number_of_elements < n)
 					{
@@ -101,6 +114,16 @@ namespace ft
 						_number_of_elements++;
 					}
 				}
+			}
+			size_type capacity() const
+			{
+				return(_capacity);
+			}
+			bool empty() const{
+				if(size() == 0)
+					return(true);
+				else
+					return(false);
 			}
 			/* **************************operators************************ */
 			
@@ -120,15 +143,12 @@ namespace ft
 			{
 						return this->vec[i];
 			}
-
-
-
-			void swap (vector& x)
+			void swap (vector& x) // to review later
 			{
-				vector a;
+				pointer a; 
 				a = this->vec;
-				this->vec = x;
-				x = a; 
+				this->vec = x.vec;
+				x.vec = a; 
 			}
 		private:
 			allocator_type	allocator_type_;
