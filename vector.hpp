@@ -42,7 +42,7 @@ namespace ft
 			vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
 			{
 				allocator_type_ = alloc;
-				_number_of_elements = distance_(first,last);
+				difference_type n = begin() - end();
 				_capacity = _number_of_elements;
 				int i = 0;
 				vec = allocator_type_.allocate(_number_of_elements);
@@ -73,7 +73,10 @@ namespace ft
 			const_reverse_iterator rend()const {return(const_reverse_iterator(&vec[0]));};
 			const_reverse_iterator rbegin()const {return(const_reverse_iterator(&vec[_number_of_elements - 1]));};
 			/* **************************capacity************************ */
-			size_type size() const{return(_number_of_elements);};
+			size_type size() const{
+			difference_type n = begin() - end() + 1;
+				return(n);
+			};
 			size_type max_size() const
 			{
 				// to review
@@ -127,28 +130,29 @@ namespace ft
 			}
 			/* **************************operators************************ */
 			
-			friend int distance_(iterator first, iterator last)
-			{
-				int i = 0;
-				while(first != last)
-				{
-					first++;
-					i++;
-				}
-				if(first == last)
-					i++;
-				return(i);
-			}
+			
 			T &operator[](unsigned int i)
 			{
 						return this->vec[i];
 			}
 			void swap (vector& x) // to review later
 			{
-				pointer a; 
-				a = this->vec;
-				this->vec = x.vec;
-				x.vec = a; 
+				size_type size_z = x.size();
+				size_type size_my = size();
+
+				pointer a = allocator_type_.allocate(size_z);
+				pointer b = allocator_type_.allocate(size_my);
+				a = x.vec;
+				b = this->vec;
+				allocator_type_.deallocate(this->vec,size());
+				allocator_type_.deallocate(x.vec,size_z);
+				x.vec = allocator_type_.allocate(size_my);
+				this->vec = allocator_type_.allocate(size_z);
+				std::cout << "the x size  "<< this->size()<< std::endl;
+				this->vec = a;
+				x.vec = b;
+
+				 
 			}
 		private:
 			allocator_type	allocator_type_;

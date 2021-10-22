@@ -14,6 +14,7 @@ int main ()
 	// 	test.push_back(i);
 	// }
 	ft::vector<int> a(4,3);
+	ft::vector<int> new_(a.begin(),a.end());
 	for (size_t i = 0; i < a.size(); i++)
 	{
 		a[i] = a[i] + i;
