@@ -100,12 +100,11 @@ namespace ft
 				{
 					if(n > cp)
 					{
-						pointer arr;
-						arr = allocator_type_.allocate(_capacity);
+						vector<T> arr(n);
 						for(size_type i = 0; i< size(); i++ )
-							arr[i]= vec[i] + 1;
+							arr.vec[i]= vec[i];
 						allocator_type_.deallocate(vec,size());
-						vec = arr;
+						swap(arr);
 						_capacity *=  2;
 						// reallocate another array 
 						// swap them there is a non member function called swap that i have to implement later
@@ -137,22 +136,10 @@ namespace ft
 			}
 			void swap (vector& x) // to review later
 			{
-				size_type size_z = x.size();
-				size_type size_my = size();
-
-				pointer a = allocator_type_.allocate(size_z);
-				pointer b = allocator_type_.allocate(size_my);
-				a = x.vec;
-				b = this->vec;
-				allocator_type_.deallocate(this->vec,size());
-				allocator_type_.deallocate(x.vec,size_z);
-				x.vec = allocator_type_.allocate(size_my);
-				this->vec = allocator_type_.allocate(size_z);
-				std::cout << "the x size  "<< this->size()<< std::endl;
-				this->vec = a;
-				x.vec = b;
-
-				 
+				vector<T,Alloc> tmp;
+				tmp = x;
+				x = *this;
+				*this = tmp;
 			}
 		private:
 			allocator_type	allocator_type_;
@@ -161,5 +148,14 @@ namespace ft
 			size_type _capacity;
 
 	};
+	template <class T, class Alloc>
+	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
+	{
+		vector<T,Alloc> tmp;
+		tmp = x;
+		x = y;
+		y = tmp;
+	}
 }
+
 #endif

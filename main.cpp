@@ -13,19 +13,20 @@ int main ()
 	// {
 	// 	test.push_back(i);
 	// }
-	ft::vector<int> a(4,3);
-	ft::vector<int> new_(a.begin(),a.end());
+	ft::vector<int> a(10,3);
 	for (size_t i = 0; i < a.size(); i++)
 	{
 		a[i] = a[i] + i;
 		std::cout << "this "<< a[i]<< std::endl;
 	}
-	std::cout << a.capacity() << std::endl; 
-	a.resize(7);
-	for (size_t i = 0; i < a.size(); i++)
-	{
-		std::cout << "after resize    "<< a[i]<< std::endl;
-	}
-	std::cout << a.capacity() << std::endl; 
+	a.resize(5);
+	a.resize(8,100);
+	a.resize(12);
+  std::cout << "a contains:";
+  for (size_t i=0;i<a.size();i++)
+    std::cout << ' ' << a[i];
+  std::cout << '\n';
+
+  return 0;
 	
 }

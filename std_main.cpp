@@ -19,6 +19,7 @@ int main ()
     std::cout << ' ' << bar[i];
   std::cout << '\n';
   std::cout << foo.capacity()<< std::endl;
+  std::cout << foo.size() << std::endl;
   }
 std::cout << "Testing my vector" << std::endl;
  {  
