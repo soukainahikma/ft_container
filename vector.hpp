@@ -3,6 +3,7 @@
 #include <iostream>
 #include "iterator.hpp"
 #include <iterator>
+
 namespace ft
 {
 	template < class T, class Alloc = std::allocator<T> >
@@ -100,15 +101,16 @@ namespace ft
 				{
 					if(n > cp)
 					{
-						vector<T> arr(n);
+						if(n > cp *2)
+							_capacity = n;
+						else
+							_capacity = _capacity * 2;
+						vector<T> arr(_capacity);
 						for(size_type i = 0; i< size(); i++ )
 							arr.vec[i]= vec[i];
 						allocator_type_.deallocate(vec,size());
 						swap(arr);
-						_capacity *=  2;
-						// reallocate another array 
-						// swap them there is a non member function called swap that i have to implement later
-						// comeback later to this function while testing
+						_number_of_elements = n;
 					}
 					while(_number_of_elements < n)
 					{
@@ -130,9 +132,13 @@ namespace ft
 			/* **************************operators************************ */
 			
 			
-			T &operator[](unsigned int i)
+			reference &operator[](size_type n)
 			{
-						return this->vec[i];
+						return this->vec[n];
+			}
+			const_reference &operator[](size_type n) const
+			{
+				return this->vec[n];
 			}
 			void swap (vector& x) // to review later
 			{
@@ -140,6 +146,51 @@ namespace ft
 				tmp = x;
 				x = *this;
 				*this = tmp;
+			}
+			void reserve (size_type n)
+			{
+				if(n > _capacity)
+				{
+					vector<T> arr(n);
+					arr._number_of_elements = size();
+					for(size_type i = 0; i< size(); i++ )
+						arr.vec[i]= vec[i];
+					allocator_type_.deallocate(vec,size());
+					swap(arr);
+				}
+
+			}
+			 reference at (size_type n)
+			 {
+					 if(n < size())
+				 		return(this->vec[n]);
+					else
+					 	throw(std::out_of_range("vector"));
+					//are we allowed to use std::out_of_range
+			 }
+			const_reference at (size_type n) const
+			{
+				if(n < size())
+					return(this->vec[n]);
+				else
+					throw(std::out_of_range("vector"));
+			}
+			reference front()
+			{
+				return(*this->begin());
+			}
+			const_reference front() const
+			{
+				return(*this->begin());
+			}
+
+			reference back()
+			{
+				return(*this->end());
+			}
+			const_reference back() const
+			{
+				return(*this->end());
 			}
 		private:
 			allocator_type	allocator_type_;
