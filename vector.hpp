@@ -54,14 +54,14 @@ namespace ft
 					first++;
 				}
 			}
-			vector (const vector& x){
+			vector (const vector& x)
+			{
 				_number_of_elements = x.size();
 				vec = allocator_type_.allocate(_number_of_elements);
 				for (int i = 0; i < _number_of_elements; i++)
 				{
 					vec[i] = x.vec[i];
 				}
-				
 			}
 			~vector(){}
 			/* **************************iterators************************ */
@@ -129,24 +129,6 @@ namespace ft
 				else
 					return(false);
 			}
-			/* **************************operators************************ */
-			
-			
-			reference &operator[](size_type n)
-			{
-						return this->vec[n];
-			}
-			const_reference &operator[](size_type n) const
-			{
-				return this->vec[n];
-			}
-			void swap (vector& x) // to review later
-			{
-				vector<T,Alloc> tmp;
-				tmp = x;
-				x = *this;
-				*this = tmp;
-			}
 			void reserve (size_type n)
 			{
 				if(n > _capacity)
@@ -158,10 +140,24 @@ namespace ft
 					allocator_type_.deallocate(vec,size());
 					swap(arr);
 				}
-
 			}
-			 reference at (size_type n)
-			 {
+			/* **************************operators************************ */
+			// vector& operator= (const vector& x)
+			// {
+				// 
+			// }
+			reference &operator[](size_type n)
+			{
+						return this->vec[n];
+			}
+			const_reference &operator[](size_type n) const
+			{
+				return this->vec[n];
+			}
+			/* **************************access functions************************ */
+			
+			reference at (size_type n)
+			{
 					 if(n < size())
 				 		return(this->vec[n]);
 					else
@@ -191,6 +187,45 @@ namespace ft
 			const_reference back() const
 			{
 				return(*this->end());
+			}
+			/* ************************Modifiers********************************* */
+			void swap (vector& x) // to review later
+			{
+				vector<T,Alloc> tmp;
+				tmp = x;
+				x = *this;
+				*this = tmp;
+			}
+			void push_back (const value_type& val)
+			{
+				pointer arr;
+				if(this->empty() && _capacity == 0)
+					_capacity  = 1;
+				else if(size() + 1 > _capacity)
+					_capacity = _capacity * 2;
+				arr = allocator_type_.allocate(_capacity);
+				for(size_type i = 0 ; i< size() ; i++)
+				{
+					arr[i] = vec[i];
+				}
+				arr[size()] = val;
+				allocator_type_.deallocate(vec,size());
+				vec = allocator_type_.allocate(size() + 1);
+				for(size_type i = 0 ; i< size() + 1 ; i++)
+					vec[i] = arr[i];
+				allocator_type_.deallocate(arr,_capacity);
+				_number_of_elements = size() + 1;
+			}
+			void pop_back()
+			{
+				if(!this->empty())
+					allocator_type_.destroy(vec + _number_of_elements);
+				_number_of_elements--;
+			}
+			void clear()
+			{
+				while(!this->empty())
+					this->pop_back();
 			}
 		private:
 			allocator_type	allocator_type_;
