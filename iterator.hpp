@@ -94,7 +94,7 @@ namespace ft
 					_iterator<iterator_type> tmp;
 					tmp = *this;
 					tmp.ptr_toIter = tmp.ptr_toIter + a;
-					return(*this);
+					return(tmp);
 				}
 
 				_iterator operator - (difference_type a) const
@@ -102,7 +102,7 @@ namespace ft
 					_iterator<iterator_type> tmp;
 					tmp = *this;
 					tmp.ptr_toIter = tmp.ptr_toIter - a;
-						return(*this);
+						return(tmp);
 				}
 				_iterator &operator += (difference_type a)
 				{

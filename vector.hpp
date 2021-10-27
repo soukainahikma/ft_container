@@ -227,6 +227,44 @@ namespace ft
 				while(!this->empty())
 					this->pop_back();
 			}
+			iterator erase (iterator position)
+			{
+				pointer arr;
+				size_type first_part = begin() - position;
+				size_type second_part = begin() - end();
+				arr = allocator_type_.allocate(_capacity);
+				for(size_t i = 0; i < first_part-1 ; i++)
+					arr[i] = vec[i];
+				for(size_t i = first_part; i < second_part ; i++)
+					arr[i] = vec[i+1];
+				allocator_type_.deallocate(vec,size());
+				_number_of_elements = size() - 1;
+				vec = allocator_type_.allocate(size());
+				for(size_type i = 0 ; i< size() ; i++)
+					vec[i] = arr[i];
+				allocator_type_.deallocate(arr,size());
+				return(position++);
+			}
+			iterator erase (iterator first, iterator last)
+			{
+				pointer arr;
+				size_type size_to_erase = first - last;
+				size_type first_part = begin() - first;
+				size_type second_part = begin() - end();
+				arr = allocator_type_.allocate(_capacity);
+				size_t i;
+				for( i = 0; i < first_part ; i++)
+					arr[i] = vec[i];
+				for( i = i+0 ; i < second_part - size_to_erase + 1 ; i++)
+					arr[i] = vec[i + size_to_erase];
+				allocator_type_.deallocate(vec,size());
+				_number_of_elements = size() - size_to_erase;
+				vec = allocator_type_.allocate(size());
+				for(size_type i = 0 ; i< size() ; i++)
+					vec[i] = arr[i];
+				allocator_type_.deallocate(arr,size());
+				return(last++);
+			}
 		private:
 			allocator_type	allocator_type_;
 			pointer vec;

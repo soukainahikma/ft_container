@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../vector_test.hpp"
+#include "../vector.hpp"
 
 struct data
 {
@@ -23,91 +23,91 @@ struct data
 };
 
 int main(){
-	// ft::vector<int> 			vect;
-	// vect.push_back(1337);
-	// vect.push_back(42);
-	// vect.push_back(23);
-	// vect.push_back(6);
-	// vect.push_back(1997);
-	// ft::vector<int>::iterator	iter(vect.begin());
+	ft::vector<int> 			vect;
+	vect.push_back(1337);
+	vect.push_back(42);
+	vect.push_back(23);
+	vect.push_back(6);
+	vect.push_back(1997);
+	ft::vector<int>::iterator	iter =vect.begin();
 	// std::cout << *iter << std::endl;
 	// std::cout << *(iter.base()) << std::endl;
 	// std::cout << *(++iter) << std::endl;
 	// std::cout << *(--iter) << std::endl;
 	// std::cout << *(iter++) << std::endl;
 	// std::cout << *(iter--) << std::endl;
-	// std::cout << *(iter + 2) << std::endl;
-	// std::cout << *(iter - 2) << std::endl;
-	// ft::vector<int>::iterator	iterAssignment(iter);
-	// iterAssignment += 3;
-	// std::cout << *iterAssignment << std::endl;
-	// iterAssignment -= 3;
-	// std::cout << *iterAssignment << std::endl;
-	// std::cout << iter[2] << std::endl;
-	// std::cout << (iterAssignment == iter) << std::endl;
-	// iterAssignment += 1;
-	// std::cout << (iterAssignment == iter) << std::endl;
-	// std::cout << (iterAssignment != iter) << std::endl;
-	// std::cout << (iterAssignment < iter) << std::endl;
-	// std::cout << (iterAssignment <= iter) << std::endl;
-	// std::cout << (iterAssignment > iter) << std::endl;
-	// std::cout << (iterAssignment >= iter) << std::endl;
-	// while(iter != vect.end())
-	// 	std::cout << *(iter++)<< std::endl;
-	// std::cout << "Testing with a struct!" << std::endl;
-	// ft::vector<data>			Data;
-	// Data.push_back(data(10, 20));
-	// Data.push_back(data(100, 200));
-	// Data.push_back(data(1000, 2000));
-	// Data.push_back(data(10000, 20000));
-	// Data.push_back(data(100000, 2000000));
-	// Data.push_back(data(1000000, 20000000));
-	// Data.push_back(data(10000000, 20000000));
-	// ft::vector<data>::iterator dataIterator(Data.begin());
-	// ft::vector<data>::iterator	dataAssignment(dataIterator);
-	// std::cout << dataIterator->a << std::endl;
-	// std::cout << dataIterator->b << std::endl;
-    // std::cout << (dataIterator == dataAssignment) << std::endl;
-	// std::cout << (dataIterator != dataAssignment) << std::endl;
-	// std::cout << (dataIterator < dataAssignment) << std::endl;
-	// std::cout << (dataIterator <= dataAssignment) << std::endl;
-	// std::cout << (dataIterator > dataAssignment) << std::endl;
-	// std::cout << (dataIterator >= dataAssignment) << std::endl;
-	// std::cout << dataIterator[2].a << std::endl;
-	// std::cout << "Testing reverse iterator!" << std::endl;
-    // ft::vector<int> 			bvect;
-	ft::vector<int> bvect(4,3);
-	for (size_t i = 0; i < 4; i++)
-	{
-		bvect[i] = bvect[i] + i;
-		std::cout << bvect[i]<< std::endl;
-	}
-	// bvect.push_back(1337);
-	// bvect.push_back(42);
-	// bvect.push_back(23);
-	// bvect.push_back(6);
-	// bvect.push_back(1997);
-	ft::vector<int>::reverse_iterator	biter(bvect.begin());
-	// std::cout << *biter << std::endl;
-	// std::cout << *(biter.base()) << std::endl;
-	// std::cout << *(++biter) << std::endl;
-	// std::cout << *(--biter) << std::endl;
-	// std::cout << *(biter++) << std::endl;
-	// std::cout << *(biter--) << std::endl;
-	std::cout << *(biter + 2) << std::endl;
-	std::cout << *(biter - 2) << std::endl;
-	// ft::vector<int>::reverse_iterator	biterAssignment(biter);
-	// biterAssignment += 3;
-	// std::cout << *biterAssignment << std::endl;
-	// biterAssignment -= 3;
-	// std::cout << *biterAssignment << std::endl;
-	// std::cout << biter[2] << std::endl;
-	// std::cout << (biterAssignment == biter) << std::endl;
-	// biterAssignment += 1;
-	// std::cout << (biterAssignment == biter) << std::endl;
-	// std::cout << (biterAssignment != biter) << std::endl;
-	// std::cout << (biterAssignment < biter) << std::endl;
-	// std::cout << (biterAssignment <= biter) << std::endl;
-	// std::cout << (biterAssignment > biter) << std::endl;
-	// std::cout << (biterAssignment >= biter) << std::endl;
+	std::cout << *(iter + 2) << std::endl;
+	std::cout << *(iter - 2) << std::endl;
+// 	ft::vector<int>::iterator	iterAssignment(iter);
+// 	iterAssignment += 3;
+// 	std::cout << *iterAssignment << std::endl;
+// 	iterAssignment -= 3;
+// 	std::cout << *iterAssignment << std::endl;
+// 	std::cout << iter[2] << std::endl;
+// 	std::cout << (iterAssignment == iter) << std::endl;
+// 	iterAssignment += 1;
+// 	std::cout << (iterAssignment == iter) << std::endl;
+// 	std::cout << (iterAssignment != iter) << std::endl;
+// 	std::cout << (iterAssignment < iter) << std::endl;
+// 	std::cout << (iterAssignment <= iter) << std::endl;
+// 	std::cout << (iterAssignment > iter) << std::endl;
+// 	std::cout << (iterAssignment >= iter) << std::endl;
+// 	while(iter != vect.end())
+// 		std::cout << *(iter++)<< std::endl;
+// 	std::cout << "Testing with a struct!" << std::endl;
+// 	ft::vector<data>			Data;
+// 	Data.push_back(data(10, 20));
+// 	Data.push_back(data(100, 200));
+// 	Data.push_back(data(1000, 2000));
+// 	Data.push_back(data(10000, 20000));
+// 	Data.push_back(data(100000, 2000000));
+// 	Data.push_back(data(1000000, 20000000));
+// 	Data.push_back(data(10000000, 20000000));
+// 	ft::vector<data>::iterator dataIterator(Data.begin());
+// 	ft::vector<data>::iterator	dataAssignment(dataIterator);
+// 	std::cout << dataIterator->a << std::endl;
+// 	std::cout << dataIterator->b << std::endl;
+//     std::cout << (dataIterator == dataAssignment) << std::endl;
+// 	std::cout << (dataIterator != dataAssignment) << std::endl;
+// 	std::cout << (dataIterator < dataAssignment) << std::endl;
+// 	std::cout << (dataIterator <= dataAssignment) << std::endl;
+// 	std::cout << (dataIterator > dataAssignment) << std::endl;
+// 	std::cout << (dataIterator >= dataAssignment) << std::endl;
+// 	std::cout << dataIterator[2].a << std::endl;
+// 	std::cout << "Testing reverse iterator!" << std::endl;
+
+// 	ft::vector<int> bvect(4,3);
+// 	for (size_t i = 0; i < 4; i++)
+// 	{
+// 		bvect[i] = bvect[i] + i;
+// 		std::cout << bvect[i]<< std::endl;
+// 	}
+// 	bvect.push_back(1337);
+// 	bvect.push_back(42);
+// 	bvect.push_back(23);
+// 	bvect.push_back(6);
+// 	bvect.push_back(1997);
+// 	ft::vector<int>::reverse_iterator	biter(bvect.begin());
+// 	std::cout << *biter << std::endl;
+// 	std::cout << *(biter.base()) << std::endl;
+// 	std::cout << *(++biter) << std::endl;
+// 	std::cout << *(--biter) << std::endl;
+// 	std::cout << *(biter++) << std::endl;
+// 	std::cout << *(biter--) << std::endl;
+// 	std::cout << *(biter + 2) << std::endl;
+// 	std::cout << *(biter - 2) << std::endl;
+// 	ft::vector<int>::reverse_iterator	biterAssignment(biter);
+// 	biterAssignment += 3;
+// 	std::cout << *biterAssignment << std::endl;
+// 	biterAssignment -= 3;
+// 	std::cout << *biterAssignment << std::endl;
+// 	std::cout << biter[2] << std::endl;
+// 	std::cout << (biterAssignment == biter) << std::endl;
+// 	biterAssignment += 1;
+// 	std::cout << (biterAssignment == biter) << std::endl;
+// 	std::cout << (biterAssignment != biter) << std::endl;
+// 	std::cout << (biterAssignment < biter) << std::endl;
+// 	std::cout << (biterAssignment <= biter) << std::endl;
+// 	std::cout << (biterAssignment > biter) << std::endl;
+// 	std::cout << (biterAssignment >= biter) << std::endl;
 }
