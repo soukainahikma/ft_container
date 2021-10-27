@@ -142,10 +142,13 @@ namespace ft
 				}
 			}
 			/* **************************operators************************ */
-			// vector& operator= (const vector& x)
-			// {
-				// 
-			// }
+			vector& operator= (const vector& x)
+			{
+				_number_of_elements = x._number_of_elements;
+				for(size_t i =0 ; i < size() ;i++)
+					vec[i] = x.vec[i];
+				return(*this);
+			}
 			reference &operator[](size_type n)
 			{
 						return this->vec[n];
