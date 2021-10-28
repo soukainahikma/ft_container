@@ -2,7 +2,7 @@
 #define VECTOR_HPP
 #include <iostream>
 #include "iterator.hpp"
-#include <iterator>
+#include"my_traits.hpp"
 
 namespace ft
 {
@@ -39,15 +39,15 @@ namespace ft
 					vec[i] = val;
 				_capacity = n;
 			}
-			// template <class InputIterator> // ImputIterator needs an enable_if to work for some cases
-			vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
+			template <class InputIterator > // ImputIterator needs an enable_if to work for some cases
+			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),typename std::enable_if<!std::is_integral<InputIterator>::value,bool>::type = 0)
 			{
 				allocator_type_ = alloc;
-				difference_type n = begin() - end();
+				_number_of_elements = distance_(first,last);
 				_capacity = _number_of_elements;
 				int i = 0;
-				vec = allocator_type_.allocate(_number_of_elements);
-				while(first !=  last)
+				vec = allocator_type_.allocate(3);
+				while(i < _number_of_elements)
 				{
 					vec[i] = *first;
 					i++;
@@ -58,7 +58,8 @@ namespace ft
 			{
 				_number_of_elements = x.size();
 				vec = allocator_type_.allocate(_number_of_elements);
-				for (int i = 0; i < _number_of_elements; i++)
+				
+				for (size_type i = 0; i < _number_of_elements; i++)
 				{
 					vec[i] = x.vec[i];
 				}
@@ -144,6 +145,10 @@ namespace ft
 			/* **************************operators************************ */
 			vector& operator= (const vector& x)
 			{
+				allocator_type_.deallocate(vec,size());
+				if(_capacity < x._capacity)
+					_capacity = x._capacity;
+				vec = allocator_type_.allocate(_capacity);
 				_number_of_elements = x._number_of_elements;
 				for(size_t i =0 ; i < size() ;i++)
 					vec[i] = x.vec[i];
@@ -268,6 +273,23 @@ namespace ft
 				allocator_type_.deallocate(arr,size());
 				return(last++);
 			}
+			// do we return the allocator itself or a copy
+			allocator_type get_allocator() const
+			{
+				return(allocator_type_);
+			}
+			int distance_(iterator first, iterator last)
+			{
+				int i = 0;
+				while(first != last)
+				{
+					first++;
+					i++;
+				}
+				if(first == last)
+					i++;
+				return(i);
+			}
 		private:
 			allocator_type	allocator_type_;
 			pointer vec;
@@ -283,6 +305,7 @@ namespace ft
 		x = y;
 		y = tmp;
 	}
+	
 }
 
 #endif
