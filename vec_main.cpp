@@ -1,22 +1,23 @@
-#include <iostream>
-#include <vector>
+#include <iostream>     // std::cout
+#include <iterator>     // std::reverse_iterator
+#include <vector>       // std::vector
+int main () {
+  std::vector<int> myvector;
+  for (int i=0; i<10; i++) myvector.push_back(i);
 
-int main ()
-{
-  // constructors used in the same order as described above:
-  std::vector<int> first;                                // empty vector of ints
-  std::vector<int> second (4,100);                       // four ints with value 100
-  std::vector<int> third (second.begin(),second.end());  // iterating through second
-  std::vector<int> fourth (third);                       // a copy of third
+  typedef std::vector<int>::iterator iter_type;
+                                                         // ? 9 8 7 6 5 4 3 2 1 0 ?
+  iter_type from (myvector.begin());                     //   ^
+                                                         //         ------>
+  iter_type until (myvector.end());                      //                       ^
+                                                         //
+  std::reverse_iterator<iter_type> rev_until (from);     // ^
+                                                         //         <------
+  std::reverse_iterator<iter_type> rev_from (until);     //                     ^
 
-  // the iterator constructor can also be used to construct from arrays:
-  int myints[] = {16,2,77,29};
-  std::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
-
-  std::cout << "The contents of fifth are:";
-  for (std::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
-    std::cout << ' ' << *it;
+  std::cout << "myvector:";
+  while (rev_from != rev_until)
+    std::cout << ' ' << *rev_from++;
   std::cout << '\n';
-
   return 0;
 }

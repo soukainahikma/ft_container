@@ -21,7 +21,7 @@ namespace ft
 			typedef const _iterator<pointer>							const_iterator;
 			typedef const _reverseiterator<const_iterator>				const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
-			typedef typename allocator_type::size_type					size_type;
+			typedef size_t												size_type;
 			vector (const allocator_type& alloc = allocator_type())
 			{
 				_capacity = 0;
@@ -39,19 +39,18 @@ namespace ft
 					vec[i] = val;
 				_capacity = n;
 			}
-			template <class InputIterator > // ImputIterator needs an enable_if to work for some cases
+			template <class InputIterator>
 			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),typename std::enable_if<!std::is_integral<InputIterator>::value,bool>::type = 0)
 			{
 				allocator_type_ = alloc;
+				// difference_type size_ = std::abs(last - first ) + 1;
+				// size_type i = 0;
 				_number_of_elements = distance_(first,last);
 				_capacity = _number_of_elements;
-				int i = 0;
-				vec = allocator_type_.allocate(3);
-				while(i < _number_of_elements)
+				vec = allocator_type_.allocate(_capacity);
+				for (size_t i = 0; i < _number_of_elements; i++)
 				{
-					vec[i] = *first;
-					i++;
-					first++;
+					vec[i] = *(first++);
 				}
 			}
 			vector (const vector& x)
@@ -67,11 +66,11 @@ namespace ft
 			~vector(){}
 			/* **************************iterators************************ */
 			iterator begin(){return(iterator(vec));};
-			iterator end(){return(iterator(&vec[_number_of_elements - 1]));};
+			iterator end(){return(iterator(&vec[_number_of_elements]));};
 			const_iterator begin() const {return(const_iterator(&vec[0]));};
 			const_iterator end() const {return(const_iterator(&vec[_number_of_elements - 1]));};
 			reverse_iterator rend(){return(reverse_iterator(&vec[0]));};
-			reverse_iterator rbegin(){return(reverse_iterator(&vec[_number_of_elements - 1]));};
+			reverse_iterator rbegin(){return(reverse_iterator(&vec[_number_of_elements]));};
 			const_reverse_iterator rend()const {return(const_reverse_iterator(&vec[0]));};
 			const_reverse_iterator rbegin()const {return(const_reverse_iterator(&vec[_number_of_elements - 1]));};
 			/* **************************capacity************************ */
@@ -214,7 +213,7 @@ namespace ft
 				arr = allocator_type_.allocate(_capacity);
 				for(size_type i = 0 ; i< size() ; i++)
 				{
-					arr[i] = vec[i];
+					arr[i] = vec[i ];
 				}
 				arr[size()] = val;
 				allocator_type_.deallocate(vec,size());
@@ -273,6 +272,29 @@ namespace ft
 				allocator_type_.deallocate(arr,size());
 				return(last++);
 			}
+			template <class InputIterator>
+  			void assign (InputIterator first, InputIterator last,typename std::enable_if<!std::is_integral<InputIterator>::value,bool>::type = 0)
+			{
+				size_type sizeOfVec = size();
+				vector<T, Alloc> tmp(first,last);
+				size_type sizeOfAssigne = tmp.size();
+				swap(tmp);
+				if(sizeOfAssigne > sizeOfVec)
+					reserve(sizeOfAssigne);
+				else
+					reserve(sizeOfVec);
+			}
+			void assign (size_type n, const value_type& val)
+			{
+				size_type sizeOfAssigne = n;
+				size_type sizeOfVec = size();
+				vector<T, Alloc> tmp(n,val);
+				swap(tmp);
+				if(sizeOfAssigne > sizeOfVec)
+					reserve(sizeOfAssigne);
+				else
+					reserve(sizeOfVec);
+			}
 			// do we return the allocator itself or a copy
 			allocator_type get_allocator() const
 			{
@@ -281,13 +303,12 @@ namespace ft
 			int distance_(iterator first, iterator last)
 			{
 				int i = 0;
-				while(first != last)
+				iterator tmp = first;
+				while(tmp != last)
 				{
-					first++;
+					tmp++;
 					i++;
 				}
-				if(first == last)
-					i++;
 				return(i);
 			}
 		private:

@@ -83,12 +83,25 @@ namespace ft
 					(ptr_toIter)++;
 					return(*this);
 				}
+				_iterator operator++(int)
+				{	
+					_iterator result;
+					result = *this;
+					++(this->ptr_toIter);
+					return(result);
+				}
 				_iterator &operator--()
 				{
 					(ptr_toIter)--;
 					return(*this);
 				}
-
+				_iterator operator--(int)
+				{	
+					_iterator result;
+					result = *this;
+					--this->ptr_toIter;
+					return(result);
+				}
 				_iterator operator + (difference_type a) const
 				{
 					_iterator<iterator_type> tmp;
@@ -115,20 +128,7 @@ namespace ft
 					this->ptr_toIter -=a;
 						return(*this);
 				}
-				_iterator operator--(int)
-				{	
-					_iterator result;
-					result = *this;
-					this->ptr_toIter--;
-					return(result);
-				}
-				_iterator operator++(int)
-				{	
-					_iterator result;
-					result = *this;
-					this->ptr_toIter++;
-					return(result);
-				}
+				
 				reference operator[](difference_type i) const{
 						return *(*this + i);
 				}
@@ -179,6 +179,7 @@ namespace ft
 	{
 		return(rhs.base() - lhs.base());
 	};
+	
 	template<class Iterator>
 	class _reverseiterator
 	{
@@ -194,36 +195,50 @@ namespace ft
 					return(ptr_toIter);
 				}
 				_reverseiterator(){/* ask if i have to fill default constructor */};
-				_reverseiterator(iterator_type it)// parametrized constructor
+				_reverseiterator(iterator_type it)
 				{
 					this->ptr_toIter = it;
 				};
 				template<class Iter>
-				_reverseiterator(const _reverseiterator<Iter>& rev_it)// copy constructor
+				_reverseiterator(const _reverseiterator<Iter>& rev_it)
 				{
 					*this = rev_it;
 				};
 				// ~_reverseiterator(){}; does reverse iterator have deconstructor
-				_reverseiterator<Iterator>&	operator=(const _reverseiterator<Iterator>& rawIterator)//see if we have to use std:: allocate or new
+				_reverseiterator<Iterator>&	operator=(const _reverseiterator<Iterator>& rawIterator)
 				{
 					this->ptr_toIter = rawIterator.ptr_toIter;
 					return(*this);
 				};
 				reference operator*() const
 				{
-					return *(this->ptr_toIter);
+					iterator_type tmp = ptr_toIter;
+					return (*(--tmp));
 				}
 				_reverseiterator& operator++()
 				{
-					(this->ptr_toIter)--;
+					--(this->ptr_toIter);
 					return(*this);
+				}
+				_reverseiterator operator++(int)
+				{	
+					_reverseiterator result;
+					result = *this;
+					--this->ptr_toIter;
+					return(result);
 				}
 				_reverseiterator &operator--()
 				{
-					(this->ptr_toIter)++;
+					++(this->ptr_toIter);
 					return(*this);
 				}
-
+				_reverseiterator operator--(int)
+				{	
+					_reverseiterator result;
+					result = *this;
+					++this->ptr_toIter;
+					return(result);
+				}
 				_reverseiterator operator + (difference_type a) const
 				{
 					_reverseiterator<iterator_type> tmp;
@@ -246,22 +261,9 @@ namespace ft
 				_reverseiterator &operator -= (difference_type a)
 				{
 					this->ptr_toIter +=a;
-						return(*this);
+					return(*this);
 				}
-				_reverseiterator operator--(int)
-				{	
-					_reverseiterator result;
-					result = *this;
-					this->ptr_toIter++;
-					return(result);
-				}
-				_reverseiterator operator++(int)
-				{	
-					_reverseiterator result;
-					result = *this;
-					this->ptr_toIter--;
-					return(result);
-				}
+				
 				reference operator[](difference_type i) const
 				{
 					return *(*this + i);
