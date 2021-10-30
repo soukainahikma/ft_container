@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "vector.hpp"
-template <typename T>
+/* template <typename T>
 void printer(bool test,std::string str , T value1, T value2)
 {
 	if(test == false)
@@ -43,4 +43,19 @@ for (int i = 0; i < 1000; ++i)
 		// std::cout << std_vector[i] << "  " << ft_vector[i] << std::endl;
 	}
 	testIterator(std_vector,ft_vector);
+} */
+
+int main()
+{
+	ft::vector<int> foo(3,100);   // three ints with a value of 100
+    ft::vector<int> bar(5,200);   // five ints with a value of 200
+    ft::swap(foo, bar);
+    std::cout << "foo contains:";
+    for (ft::vector<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
+        std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << "bar contains:";
+    for (ft::vector<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
+        std::cout << ' ' << *it;
+    std::cout << '\n';
 }

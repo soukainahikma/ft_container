@@ -43,15 +43,11 @@ namespace ft
 			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),typename std::enable_if<!std::is_integral<InputIterator>::value,bool>::type = 0)
 			{
 				allocator_type_ = alloc;
-				// difference_type size_ = std::abs(last - first ) + 1;
-				// size_type i = 0;
 				_number_of_elements = distance_(first,last);
 				_capacity = _number_of_elements;
 				vec = allocator_type_.allocate(_capacity);
 				for (size_t i = 0; i < _number_of_elements; i++)
-				{
 					vec[i] = *(first++);
-				}
 			}
 			vector (const vector& x)
 			{
@@ -87,7 +83,6 @@ namespace ft
 			{
 				size_type cp = _capacity;
 				size_type size_ = size();
-
 				if (n < size_)
 				{
 					while(size_ > n)
@@ -97,8 +92,9 @@ namespace ft
 					}
 					_number_of_elements = n;
 				}
-				if(n > size_)
+				else if(n > size_)
 				{
+
 					if(n > cp)
 					{
 						if(n > cp *2)
@@ -108,9 +104,9 @@ namespace ft
 						vector<T> arr(_capacity);
 						for(size_type i = 0; i< size(); i++ )
 							arr.vec[i]= vec[i];
-						allocator_type_.deallocate(vec,size());
+						// allocator_type_.deallocate(vec,size());
 						swap(arr);
-						_number_of_elements = n;
+						_number_of_elements = arr.size();
 					}
 					while(_number_of_elements < n)
 					{
@@ -145,7 +141,7 @@ namespace ft
 			vector& operator= (const vector& x)
 			{
 				allocator_type_.deallocate(vec,size());
-				if(_capacity < x._capacity)
+				// if(_capacity < x._capacity)
 					_capacity = x._capacity;
 				vec = allocator_type_.allocate(_capacity);
 				_number_of_elements = x._number_of_elements;
@@ -189,7 +185,7 @@ namespace ft
 
 			reference back()
 			{
-				return(*this->end());
+				return(*(this->end() - 1));
 			}
 			const_reference back() const
 			{
@@ -198,6 +194,7 @@ namespace ft
 			/* ************************Modifiers********************************* */
 			void swap (vector& x) // to review later
 			{
+				
 				vector<T,Alloc> tmp;
 				tmp = x;
 				x = *this;
@@ -237,7 +234,7 @@ namespace ft
 			iterator erase (iterator position)
 			{
 				pointer arr;
-				size_type first_part = begin() - position;
+				size_type first_part =position - begin();
 				size_type second_part = begin() - end();
 				arr = allocator_type_.allocate(_capacity);
 				for(size_t i = 0; i < first_part-1 ; i++)
@@ -318,9 +315,10 @@ namespace ft
 			size_type _capacity;
 
 	};
-	template <class T, class Alloc>
+	template <class T, class Alloc >
 	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
 	{
+		// x.swap(y);
 		vector<T,Alloc> tmp;
 		tmp = x;
 		x = y;

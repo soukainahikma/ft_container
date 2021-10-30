@@ -1,7 +1,7 @@
 #include <iostream>     // std::cout
 #include <iterator>     // std::reverse_iterator
 #include <vector>       // std::vector
-int main () {
+/* int main () {
   std::vector<int> myvector;
   for (int i=0; i<10; i++) myvector.push_back(i);
 
@@ -20,4 +20,4 @@ int main () {
     std::cout << ' ' << *rev_from++;
   std::cout << '\n';
   return 0;
-}
+} */

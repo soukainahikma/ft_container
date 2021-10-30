@@ -2,23 +2,15 @@
 #include "iterator.hpp" 
 
 int main () {
-  ft::vector<int> myvector;
-  for (int i=0; i<10; i++) myvector.push_back(i);
-
-  typedef ft::vector<int>::iterator iter_type;
-                                                         // ? 9 8 7 6 5 4 3 2 1 0 ?
-  iter_type from (myvector.begin());                     //   ^
-                                                         //         ------>
-  iter_type until (myvector.end());                      //                       ^
-                                                         //
-  ft::_reverseiterator<iter_type> rev_until (from);     // ^
-                                                         //         <------
-  ft::_reverseiterator<iter_type> rev_from (until);     //                     ^
-
-  std::cout << "myvector:";
-  while (rev_from != rev_until)
-    std::cout << ' ' << *rev_from++;
-  std::cout << '\n';
-
-  return 0;
+   std::cout << "NOTE - Constructor"<< std::endl;
+   { ft::vector<int> first;                                
+    ft::vector<int> second (4,100);                      
+    ft::vector<int> third (second.begin(),second.end()); 
+    ft::vector<int> fourth (third);                       
+    int myints[] = {16,2,77,29};
+    ft::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+    std::cout << "The contents of fifth are:";
+    for (ft::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+        std::cout << ' ' << *it;
+    std::cout << '\n';}
 }
