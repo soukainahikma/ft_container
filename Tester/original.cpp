@@ -266,40 +266,40 @@ int main()
     std::cout << '\n';}
     
     std::cout << "- Insert elements"<< std::endl;
-    // std::vector<int> myvector(3, 100);
-    // std::cout << myvector.size() << std::endl;
-    // std::cout << myvector.capacity() << std::endl;
-    // std::vector<int>::iterator it;
-    // it = myvector.begin();
-    // it = myvector.insert ( it , 200 );
-    // myvector.insert (it,2,300);
-    // it = myvector.begin();
-    // std::vector<int> anothervector (2,400);
-    // std::cout << myvector.size() << std::endl;
-    // std::cout << myvector.capacity() << std::endl;
-    // myvector.insert (it+2,anothervector.begin(),anothervector.end());
-    // std::cout << myvector.size() << std::endl;
-    // std::cout << myvector.capacity() << std::endl;
-    // int myarray [] = { 501,502,503 };
-    // myvector.insert (myvector.begin(), myarray, myarray+3);
-    // std::cout << "myvector contains:";
-    // for (it=myvector.begin(); it<myvector.end(); it++)
-    //     std::cout << ' ' << *it;
-    // std::cout << '\n';
+   { std::vector<int> myvector(3, 100);
+    std::cout << myvector.size() << std::endl;
+    std::cout << myvector.capacity() << std::endl;
+    std::vector<int>::iterator it;
+    it = myvector.begin();
+    it = myvector.insert ( it , 200 );
+    myvector.insert (it,2,300);
+    it = myvector.begin();
+    std::vector<int> anothervector (2,400);
+    std::cout << myvector.size() << std::endl;
+    std::cout << myvector.capacity() << std::endl;
+    myvector.insert (it+2,anothervector.begin(),anothervector.end());
+    std::cout << myvector.size() << std::endl;
+    std::cout << myvector.capacity() << std::endl;
+    int myarray [] = { 501,502,503 };
+    myvector.insert (myvector.begin(), myarray, myarray+3);
+    std::cout << "myvector contains:";
+    for (it=myvector.begin(); it<myvector.end(); it++)
+        std::cout << ' ' << *it;
+    std::cout << '\n';}
 
-    // std::vector<int> vec;
-    // vec.push_back(10);
-    // vec.push_back(20);
-    // vec.push_back(30);
-    // vec.push_back(40);
-    // std::vector<int>::iterator it = vec.insert(vec.begin(), 3);
-    // vec.insert(it, 2);
-    // int i = 2;
-    // it = vec.insert(vec.begin() + i, 7);
-    // std::cout << "The vector elements are: ";
-    // for (std::vector<int>::iterator it1 = vec.begin(); it1 != vec.end(); ++it1)
-    //     std::cout << *it1 << " ";
-    // std::cout << '\n';
+    {std::vector<int> vec;
+    vec.push_back(10);
+    vec.push_back(20);
+    vec.push_back(30);
+    vec.push_back(40);
+    std::vector<int>::iterator it = vec.insert(vec.begin(), 3);
+    vec.insert(it, 2);
+    int i = 2;
+    it = vec.insert(vec.begin() + i, 7);
+    std::cout << "The vector elements are: ";
+    for (std::vector<int>::iterator it1 = vec.begin(); it1 != vec.end(); ++it1)
+        std::cout << *it1 << " ";
+    std::cout << '\n';}
     
     std::cout << "- Erase elements"<< std::endl;
     {std::vector<int> myvector1;

@@ -142,7 +142,6 @@ namespace ft
 			vector& operator= (const vector& x)
 			{
 				allocator_type_.deallocate(vec,size());
-				// if(_capacity < x._capacity)
 					_capacity = x._capacity;
 				vec = allocator_type_.allocate(_capacity);
 				_number_of_elements = x._number_of_elements;
@@ -206,21 +205,26 @@ namespace ft
 			void push_back (const value_type& val)
 			{
 				pointer arr;
-				if(this->empty() && _capacity == 0)
+				if(/* this->empty() && */ _capacity == 0)
 					_capacity  = 1;
 				else if(size() + 1 > _capacity)
 					_capacity = _capacity * 2;
 				arr = allocator_type_.allocate(_capacity);
 				for(size_type i = 0 ; i< size() ; i++)
 				{
-					arr[i] = vec[i ];
+					arr[i] = vec[i];
+					allocator_type_.destroy(vec + i);
 				}
 				arr[size()] = val;
-				allocator_type_.deallocate(vec,size());
-				vec = allocator_type_.allocate(size() + 1);
-				for(size_type i = 0 ; i< size() + 1 ; i++)
-					vec[i] = arr[i];
-				allocator_type_.deallocate(arr,_capacity);
+				allocator_type_.deallocate(vec, size());
+				vec = arr;
+				// vec = allocator_type_.allocate(size() + 1);
+				// for(size_type i = 0 ; i< size() + 1 ; i++)
+				// {
+				// 	vec[i] = arr[i];
+				// 	allocator_type_.destroy(arr + i);
+				// }
+				// allocator_type_.deallocate(arr,_capacity);
 				_number_of_elements = size() + 1;
 			}
 			void pop_back()
@@ -304,11 +308,13 @@ namespace ft
 			{
 				iterator first = begin();
 				vector<T, Alloc> tmp;
+				tmp.reserve(_capacity);
 				while(first < position)
 				{
 					tmp.push_back(*first);
 					first++;
 				}
+				size_type to_add = tmp.size();
 				tmp.push_back(val);
 				while(first < end())
 				{
@@ -317,14 +323,14 @@ namespace ft
 					first++;
 				}
 				swap(tmp);
-				return(position);
+				return(begin() + to_add);
 			}
 			 void insert (iterator position, size_type n, const value_type& val)
 			 {
 				 size_type i = 0;
 				 while(i < n)
 				 {
-					 insert(position,val);
+					position = insert(position,val) + 1;
 					 i++;
 				 }
 			 }
@@ -333,7 +339,8 @@ namespace ft
 				{
 					while(first < last)
 					{
-						insert(position, *first);
+						position = insert(position, *first) +1;
+						
 						first++;
 					}
 				}
