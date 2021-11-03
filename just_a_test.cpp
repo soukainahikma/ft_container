@@ -1,22 +1,30 @@
 #include <iostream>
 // #include <vector>
+// #include <stack>
 #include "vector.hpp"
+#include "stack.hpp"
 
 
 int main ()
 {
-    ft::vector<int> myvector(3, 100);
-    ft::vector<int>::iterator it;
-    it = myvector.begin();
-    it = myvector.insert ( it , 200 );
-    myvector.insert (it,2,300);
-    it = myvector.begin();
-    ft::vector<int> anothervector (2,400);
-    myvector.insert (it+2,anothervector.begin(),anothervector.end());
-    int myarray [] = { 501,502,503 };
-    myvector.insert (myvector.begin(), myarray, myarray+3);
-    std::cout << "myvector contains:";
-    for (it=myvector.begin(); it<myvector.end(); it++)
-        std::cout << ' ' << *it;
-    std::cout << '\n';
+   ft::vector <int> s1, s2, s3;
+    s1.push_back( 5 );
+    s1.push_back( 10 );
+    s2.push_back( 1 );
+    s2.push_back( 2 );
+    s3.push_back( 5 );
+    s3.push_back( 10 );
+    if ( s1 <= s2 )
+        std::cout << "The stack s1 is less than or equal to "
+            << "the stack s2." << std::endl;
+    else
+        std::cout << "The stack s1 is greater than "
+            << "the stack s2." << std::endl;
+
+    if ( s1 <= s3 )
+        std::cout << "The stack s1 is less than or equal to "
+            << "the stack s3." << std::endl;
+    else
+        std::cout << "The stack s1 is greater than "
+            << "the stack s3." << std::endl;
 }
