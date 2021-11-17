@@ -1,30 +1,26 @@
+
+#include"pair.hpp"
+#include "binary_tree.hpp"
 #include <iostream>
-// #include <vector>
-// #include <stack>
-#include "vector.hpp"
-#include "stack.hpp"
-
-
-int main ()
+#include <map>
+int main()
 {
-   ft::vector <int> s1, s2, s3;
-    s1.push_back( 5 );
-    s1.push_back( 10 );
-    s2.push_back( 1 );
-    s2.push_back( 2 );
-    s3.push_back( 5 );
-    s3.push_back( 10 );
-    if ( s1 <= s2 )
-        std::cout << "The stack s1 is less than or equal to "
-            << "the stack s2." << std::endl;
-    else
-        std::cout << "The stack s1 is greater than "
-            << "the stack s2." << std::endl;
+	ft::pair <int, int> pr = ft::make_pair(10,20);
+	ft::btree<ft::pair <int, int> > test;
+	// test.insert(pr);
 
-    if ( s1 <= s3 )
-        std::cout << "The stack s1 is less than or equal to "
-            << "the stack s3." << std::endl;
-    else
-        std::cout << "The stack s1 is greater than "
-            << "the stack s3." << std::endl;
+	test.insert(ft::make_pair(30,10));
+	test.insert(ft::make_pair(40,11));
+	test.insert(ft::make_pair(33,12));
+	std::cout<< " this is before " << std::endl;
+	test.printer(test);
+	// ft::node<ft::pair <int, int> > *a = test.right_rotation(test.getroot());
+	ft::node<ft::pair <int, int> > *b = test.right_left_rotation(test.getroot());
+	// test.insert(ft::make_pair(16,15));
+	// test.insert(ft::make_pair(35,18));
+	// test.insert(ft::make_pair(30,19));
+	// test.insert(ft::make_pair(37,77));
+	std::cout<< " this is after " << std::endl;
+	test.print_preorder(b, "this is first node   ");
+	// test.print_height();
 }

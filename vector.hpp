@@ -3,7 +3,7 @@
 #include <iostream>
 #include "iterator.hpp"
 #include"my_traits.hpp"
-#include <vector>
+
 
 namespace ft
 {
@@ -344,6 +344,7 @@ namespace ft
 						first++;
 					}
 				}
+				
 			int distance_(iterator first, iterator last)
 			{
 				int i = 0;
