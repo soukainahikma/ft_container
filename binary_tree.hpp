@@ -117,19 +117,38 @@ namespace ft
 				int h =0;
 				if(t!= NULL)
 				{
-					
+					int l_height = height_calculator(node_->left);
+					int r_height = height_calculator(node_->right);
+					int max_height= std::max(l_height,r_height);
+					h = max_height + 1;
 				}
+				return(h);
 			}
 			int balance_factor(node<T> node_)
 			{
-				/* difference of height of the left and the right */
-
+				int l_height = height_calculator(node_->left);
+				int r_height = height_calculator(node_->right);
+				int balance_factor_ = r_height - l_height;
+				return(balance_factor_)
 			}
 			node<T> *balance(node<T> *node_)
 			{
-				/* calculate balance factor */
-				/*	check on blance factor to chose rotation calculate difference to know wich rotation*/
-
+				int balance_factor_ = balance_factor(node_);
+				if(balance_factor_ > 1)
+				{
+					if(balance_factor(node->right)> 0)
+						node_ = left_rotation(node_);
+					else
+						node_ = right_left_rotation(node_);
+				}
+				if(balance_factor_ < -1)
+				{
+					if(balance_factor(node->right)> 0)
+						node_ = right_rotation(node_);
+					else
+						node_ = left_right_rotation(node_);
+				}
+				return(node_)
 			}
 	};
 			}
