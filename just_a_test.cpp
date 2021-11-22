@@ -9,18 +9,20 @@ int main()
 	ft::btree<ft::pair <int, int> > test;
 	// test.insert(pr);
 
-	test.insert(ft::make_pair(30,10));
+	test.insert(ft::make_pair(33,10));
 	test.insert(ft::make_pair(40,11));
-	test.insert(ft::make_pair(33,12));
+	test.insert(ft::make_pair(50,12));
 	std::cout<< " this is before " << std::endl;
-	test.printer(test);
+	// test.printer(test);
 	// ft::node<ft::pair <int, int> > *a = test.right_rotation(test.getroot());
-	ft::node<ft::pair <int, int> > *b = test.right_left_rotation(test.getroot());
+	// ft::node<ft::pair <int, int> > *b = test.balance(test.getroot());
 	// test.insert(ft::make_pair(16,15));
 	// test.insert(ft::make_pair(35,18));
 	// test.insert(ft::make_pair(30,19));
 	// test.insert(ft::make_pair(37,77));
-	std::cout<< " this is after " << std::endl;
-	test.print_preorder(b, "this is first node   ");
+	// std::cout<< " this is after " << std::endl;
+	// test.print_preorder(test.getroot(), "this is first node   ");
+	// std::cout << std::endl;
+	// test.print_preorder(test.getroot(), "this is first node   ");
 	// test.print_height();
 }
