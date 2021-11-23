@@ -45,33 +45,34 @@ namespace ft
 					root->parent = NULL;
 				}
 			}
-			void insert(value_type key, node<T> *leaf)
+			void insert(value_type key, node<T> *root)
 			{
-				node<T> *traverse = leaf;
-				node<T> *tmp;
-				while(traverse != NULL)
+				node<T> *new_node;
+				node<T> *ptr;
+				node<T> *ptr_parent;
+
+				new_node = allocator_type_.allocate(1);
+				new_node->key_value = key;
+				new_node->left=NULL;
+				new_node->right= NULL;
+				ptr = root;
+				while(ptr != NULL)
 				{
-					tmp = traverse;
-					if(compare(key.first , traverse->key_value.first))
-						traverse = traverse->left;
+					ptr_parent = ptr;
+					if(compare(key.first , ptr->key_value.first))
+						ptr = ptr->left;
 					else
-						traverse = traverse->right;
+						ptr = ptr->right;
 				}
-				traverse = allocator_type_.allocate(1);
-				traverse->parent = tmp;
-				traverse->key_value = key;
-				traverse->left=NULL;
-				traverse->right= NULL;
-				if(compare(key.first , tmp->key_value.first))
-						tmp->left = traverse;
-				/* here i should balance tmp */
-					else
-						tmp->right = traverse;
-				/* here i should balance tmp */
-				if(tmp->parent)
+				if(compare(key.first , ptr_parent->key_value.first))
+							ptr_parent->left = new_node;
+				else
+					ptr_parent->right = new_node;
+					new_node->parent = ptr_parent;
+				if(ptr_parent->parent)
 				{
-					tmp = balance(tmp->parent);
-					print_preorder(tmp,"this is first node   ");
+					std::cout<< ptr_parent->parent->key_value.first << std::endl;
+					
 				}
 			}
 			void print_preorder(node<T> *root,std::string str)
@@ -144,30 +145,30 @@ namespace ft
 			{
 				int l_height = height_calculator(node_->left);
 				int r_height = height_calculator(node_->right);
-				int balance_factor_ = r_height - l_height;
+				int balance_factor_ = l_height - r_height ;
 				return(balance_factor_);
 			}
 			node<T> *balance(node<T> *node_)
 			{
+				
 				int balance_factor_ = balance_factor(node_);
 				if(balance_factor_ > 1)
 				{
-					if(balance_factor(node_->right)> 0)
+					if(balance_factor(node_->left)> 0)
 						node_ = left_rotation(node_);
 					else
-						node_ = right_left_rotation(node_);
+						node_ = left_right_rotation(node_);
 				}
 				if(balance_factor_ < -1)
 				{
 					if(balance_factor(node_->right)> 0)
-						node_ = right_rotation(node_);
+						node_ = right_left_rotation(node_);
 					else
-						node_ = left_right_rotation(node_);
+						node_ = right_rotation(node_);
 				}
 				return(node_);
 			}
 	};
 			}
 			
-
 #endif
