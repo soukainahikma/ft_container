@@ -1,6 +1,7 @@
 #ifndef BINARY_TREE_HPP
 #define BINARY_TREE_HPP
 #include <iostream>
+#include <map>
 namespace ft
 {
 	template <class T>
@@ -30,51 +31,6 @@ namespace ft
 			{
 				return(root);
 			}
-			void insert(value_type key)
-			{
-				if (root != NULL)
-				{
-					insert(key,root);
-				}
-				else
-				{
-					root= allocator_type_.allocate(1);
-					root->key_value = key;
-					root->left = NULL;
-					root->right = NULL;
-					root->parent = NULL;
-				}
-			}
-			void insert(value_type key, node<T> *root)
-			{
-				node<T> *new_node;
-				node<T> *ptr;
-				node<T> *ptr_parent;
-
-				new_node = allocator_type_.allocate(1);
-				new_node->key_value = key;
-				new_node->left=NULL;
-				new_node->right= NULL;
-				ptr = root;
-				while(ptr != NULL)
-				{
-					ptr_parent = ptr;
-					if(compare(key.first , ptr->key_value.first))
-						ptr = ptr->left;
-					else
-						ptr = ptr->right;
-				}
-				if(compare(key.first , ptr_parent->key_value.first))
-							ptr_parent->left = new_node;
-				else
-					ptr_parent->right = new_node;
-					new_node->parent = ptr_parent;
-				if(ptr_parent->parent)
-				{
-					std::cout<< ptr_parent->parent->key_value.first << std::endl;
-					
-				}
-			}
 			void print_preorder(node<T> *root,std::string str)
 			{
 				if (root == nullptr) {
@@ -84,26 +40,7 @@ namespace ft
 				print_preorder(root->left,"this is left         ");
 				print_preorder(root->right,"this is right        ");
 			}
-			void printer(btree<T> tree)
-			{
-				print_preorder(tree.root, "this is first node   ");
-			}
-			
 			node<T> *right_rotation(node<T> *node_to_rotate)
-			{
-				node<T> *y;
-				node<T> *tmp;
-				y = node_to_rotate->left;
-				y->parent = node_to_rotate->parent;
-				tmp = y->right;
-				y->right = node_to_rotate;
-				node_to_rotate->parent = y;
-				node_to_rotate->left = tmp;
-				if(tmp != NULL)
-					tmp->parent  = node_to_rotate;
-				return(y);
-			}
-			node<T> *left_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y;
 				node <T> *tmp;
@@ -117,17 +54,31 @@ namespace ft
 					tmp->parent  = node_to_rotate;
 				return(y);
 			}
+			node<T> *left_rotation(node<T> *node_to_rotate)
+			{
+				node<T> *y;
+				node<T> *tmp;
+				y = node_to_rotate->left;
+				y->parent = node_to_rotate->parent;
+				tmp = y->right;
+				y->right = node_to_rotate;
+				node_to_rotate->parent = y;
+				node_to_rotate->left = tmp;
+				if(tmp != NULL)
+					tmp->parent  = node_to_rotate;
+				return(y);
+			}
 			node<T> *left_right_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y = node_to_rotate->left;;
-				node_to_rotate->left = left_rotation(y);
-				return(right_rotation(node_to_rotate));
+				node_to_rotate->left = right_rotation(y);
+				return(left_rotation(node_to_rotate));
 			}
 			node<T> *right_left_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y = node_to_rotate->right;
-				node_to_rotate->right = right_rotation(y);
-				return(left_rotation(node_to_rotate));
+				node_to_rotate->right = left_rotation(y);
+				return(right_rotation(node_to_rotate));
 			}
 			int height_calculator(node<T> *node_)
 			{
@@ -150,7 +101,6 @@ namespace ft
 			}
 			node<T> *balance(node<T> *node_)
 			{
-				
 				int balance_factor_ = balance_factor(node_);
 				if(balance_factor_ > 1)
 				{
@@ -159,7 +109,7 @@ namespace ft
 					else
 						node_ = left_right_rotation(node_);
 				}
-				if(balance_factor_ < -1)
+				else if(balance_factor_ < -1)
 				{
 					if(balance_factor(node_->right)> 0)
 						node_ = right_left_rotation(node_);
@@ -168,7 +118,38 @@ namespace ft
 				}
 				return(node_);
 			}
-	};
+			void insert_(value_type key)
+			{
+					root = insert(key,root);
 			}
+			node<T> *insert(value_type key, node<T> *root_)
+			{
+				if(root_ == NULL)
+				{	
+					root_= allocator_type_.allocate(1);
+					root_->key_value = key;
+					root_->left = NULL;
+					root_->right = NULL;
+					root_->parent = NULL;
+					return(root_);
+				}
+				if(compare(key.first , root_->key_value.first))
+				{
+					node<T> *child = insert(key,root_->left);
+					root_->left = child;
+					child->parent = root_;
+					root_ = balance(root_);
+				}
+				else
+				{
+					node<T> *child = insert(key,root_->right);
+					root_->right = child;
+					child->parent = root_;
+					root_ = balance(root_);
+				}
+				return(root_);
+			}
+	};
+}
 			
 #endif
