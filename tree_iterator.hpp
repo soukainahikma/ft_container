@@ -30,23 +30,31 @@ namespace ft
 		typedef const T&						const_reference;
 		typedef std::ptrdiff_t					difference_type;
 	};
-	template<class Iter>
+	template<class Tp,class Iter>
 	class tree_iterator
 	{
 		public:
-			typedef Iter											iter_type;
-			typedef iterator_traits<iter_type>::iterator_category	iterator_category;
-			typedef iterator_traits<iter_type>::difference_type		difference_type;
-			typedef iterator_traits<iter_type>::reference			reference;
-			typedef iterator_traits<iter_type>::pointer				pointer;
-			typedef tree<Iter>
+			typedef Iter														node_type;
+			typedef typename iterator_traits<node_type>::iterator_category		iterator_category;
+			typedef typename iterator_traits<node_type>::difference_type		difference_type;
+			typedef Tp&															reference;
+			typedef Tp*															pointer;
+			// typedef tree<Iter>
 		public:
-		iter_type base() const;
+		tree_iterator(node_type node)
 		{
-			return(_tree)
+			node_ = node;
 		}
-		private;
-			iter_type __tree;
+		node_type base() const
+		{
+			return(node_);
+		}
+		pointer operator->()
+		{
+			return(&(node_->key_value));
+		}
+		private:
+			node_type node_;
 	};
 }
 #endif
