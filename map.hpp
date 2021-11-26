@@ -4,7 +4,7 @@
 #include "binary_tree.hpp"
 #include "pair.hpp"
 #include "tree_iterator.hpp"
-#include <map>
+#include"iterator.hpp"
 namespace ft
 {
 	template < class Key, class T,class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair< const Key,T> > > 
@@ -23,9 +23,9 @@ namespace ft
 			typedef typename allocator_type::const_pointer							const_pointer;
 
 			typedef tree_iterator<value_type, pointer>								iterator;
-			// typedef _iterator<pointer>											const_iterator;
-			// typedef std::reverse_iterator<iterator>								reverse_iterator;
-			// typedef std::reverse_iterator<const_iterator>						const_reverse_iterator;
+			typedef const tree_iterator<value_type, pointer>						const_iterator;
+			typedef ft::_reverseiterator<iterator>									reverse_iterator;
+			typedef ft::_reverseiterator<const_iterator>							const_reverse_iterator;
 			// typedef typename iterator_traits<iterator>::difference_type			difference_type;
 			typedef size_t											size_type;
 		private:

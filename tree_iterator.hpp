@@ -2,35 +2,36 @@
 #define TREE_ITERATOR_HPP
 #include <iostream>
 #include "binary_tree.hpp"
+#include "iterator.hpp"
 namespace ft
 {
-	template <typename T>
-	struct iterator_traits {
-		typedef typename T::value_type				value_type;
-		typedef typename T::difference_type			difference_type;
-		typedef typename T::iterator_category		iterator_category;
-		typedef typename T::pointer					pointer;
-		typedef typename T::reference				reference;
-	};
+	// template <typename T>
+	// struct iterator_traits {
+	// 	typedef typename T::value_type				value_type;
+	// 	typedef typename T::difference_type			difference_type;
+	// 	typedef typename T::iterator_category		iterator_category;
+	// 	typedef typename T::pointer					pointer;
+	// 	typedef typename T::reference				reference;
+	// };
 
-	template<typename T>
-	struct iterator_traits<T*>
-	{
-		typedef std::bidirectional_iterator_tag	iterator_category;
-		typedef T								value_type;
-		typedef T*								pointer;
-		typedef T&								reference;
-		typedef std::ptrdiff_t					difference_type;
-	};
-	template<typename T>
-	struct iterator_traits< const T*>
-	{
-		typedef std::bidirectional_iterator_tag	iterator_category;
-		typedef T								value_type;
-		typedef const T*						const_pointer;
-		typedef const T&						const_reference;
-		typedef std::ptrdiff_t					difference_type;
-	};
+	// template<typename T>
+	// struct iterator_traits<T*>
+	// {
+	// 	typedef std::bidirectional_iterator_tag	iterator_category;
+	// 	typedef T								value_type;
+	// 	typedef T*								pointer;
+	// 	typedef T&								reference;
+	// 	typedef std::ptrdiff_t					difference_type;
+	// };
+	// template<typename T>
+	// struct iterator_traits< const T*>
+	// {
+	// 	typedef std::bidirectional_iterator_tag	iterator_category;
+	// 	typedef T								value_type;
+	// 	typedef const T*						const_pointer;
+	// 	typedef const T&						const_reference;
+	// 	typedef std::ptrdiff_t					difference_type;
+	// };
 	template<class Tp,class Iter>
 	class tree_iterator
 	{
@@ -38,6 +39,7 @@ namespace ft
 			typedef Iter														node_type;
 			typedef typename iterator_traits<node_type>::iterator_category		iterator_category;
 			typedef typename iterator_traits<node_type>::difference_type		difference_type;
+			typedef typename iterator_traits<node_type>::value_type			value_type;
 			typedef Tp&															reference;
 			typedef Tp*															pointer;
 		public:

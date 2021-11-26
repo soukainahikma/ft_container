@@ -9,8 +9,8 @@ int main()
 	mymap.insert(ft::make_pair(50,60));
 	mymap.insert(ft::make_pair(40,60));
 	mymap.insert(ft::make_pair(100,60));
-	ft::map<int,int>::iterator it = mymap.end();
-	ft::map<int,int>::iterator it2 = it;
+	ft::map<int,int>::reverse_iterator it = mymap.end();
+	ft::map<int,int>::reverse_iterator it2 = it;
 	std::cout << (*it2).first<< " ===> " << it2->second << std::endl;
 	if(it != it2)
 		std::cout<< "they are equal"<< std::endl;
