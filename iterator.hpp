@@ -1,5 +1,6 @@
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
+#include <iostream>
 namespace ft
 {
 	template <typename T>
@@ -315,6 +316,5 @@ namespace ft
 	{
 		return(rhs.base() - lhs.base());
 	};
-	/* here goes my tree_iterator */
 };
 #endif

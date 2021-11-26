@@ -5,17 +5,15 @@
 #include <map>
 int main()
 {
-	std::map<int, int> mymap;
-	mymap.insert(std::make_pair(50,60));
-	mymap.insert(std::make_pair(40,60));
-	mymap.insert(std::make_pair(100,60));
-	std::map<int,int>::iterator it = --mymap.end();
-	std::cout << it->first<< " ===> " << it->second << std::endl;
-	it--;
-	std::cout << it->first<< " ===> " << it->second << std::endl;
-	it--;
-	std::cout << it->first<< " ===> " << it->second << std::endl;
-
-	
-	
+	ft::map<int, int> mymap;
+	mymap.insert(ft::make_pair(50,60));
+	mymap.insert(ft::make_pair(40,60));
+	mymap.insert(ft::make_pair(100,60));
+	ft::map<int,int>::iterator it = mymap.end();
+	ft::map<int,int>::iterator it2 = it;
+	std::cout << (*it2).first<< " ===> " << it2->second << std::endl;
+	if(it != it2)
+		std::cout<< "they are equal"<< std::endl;
+	else
+	std::cout<< "they are not equal"<< std::endl;
 }
