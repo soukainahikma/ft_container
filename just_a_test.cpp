@@ -13,14 +13,15 @@ int main()
 	test.insert_(ft::make_pair(40,11));
 	test.insert_(ft::make_pair(30,12));
 	test.insert_(ft::make_pair(20,12));
-	// test.insert_(ft::make_pair(61,12));
-	// test.insert_(ft::make_pair(70,12));
-	// test.insert_(ft::make_pair(55,12));
-	// test.insert_(ft::make_pair(41,12));
-	// test.insert_(ft::make_pair(10,12));
-	// test.insert_(ft::make_pair(5,12));
+	test.insert_(ft::make_pair(61,12));
+	test.insert_(ft::make_pair(70,12));
+	test.insert_(ft::make_pair(55,12));
+	test.insert_(ft::make_pair(41,12));
+	test.insert_(ft::make_pair(10,12));
+	test.insert_(ft::make_pair(5,12));
 	test.print_preorder(test.getroot(), "this is first node   ");
 	test.deletion_node(test.getroot(),40);
+	test.deletion_node(test.getroot(),30);
 
 	// test.printer(test);
 	// ft::node<ft::pair <int, int> > *a = test.right_rotation(test.getroot());
@@ -31,6 +32,6 @@ int main()
 	// test.insert(ft::make_pair(37,77));
 	// std::cout<< " this is after " << std::endl;
 	// test.print_preorder(test.getroot(), "this is first node   ");
-	// std::cout << std::endl;
+	std::cout << std::endl;
 	test.print_preorder(test.getroot(), "this is first node   ");
 }
