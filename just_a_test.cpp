@@ -1,8 +1,8 @@
 #include"pair.hpp"
 #include "binary_tree.hpp"
 #include <iostream>
-#include "map.hpp"
-#include <map>
+// #include "map.hpp"
+// #include <map>
 int main()
 {
 	ft::pair <int, int> pr = ft::make_pair(10,20);
@@ -19,10 +19,11 @@ int main()
 	test.insert_(ft::make_pair(41,12));
 	test.insert_(ft::make_pair(10,12));
 	test.insert_(ft::make_pair(5,12));
+	test.insert_(ft::make_pair(2,12));
 	test.print_preorder(test.getroot(), "this is first node   ");
-	test.deletion_node(test.getroot(),40);
+	// test.deletion_node(test.getroot(),40);
 	test.deletion_node(test.getroot(),30);
-
+// ft::node<ft::pair<int, int > > *node_ = test.Search_tree(test.getroot(),ft::make_pair(20,50));
 	// test.printer(test);
 	// ft::node<ft::pair <int, int> > *a = test.right_rotation(test.getroot());
 	// ft::node<ft::pair <int, int> > *b = test.balance(test.getroot());
@@ -32,6 +33,7 @@ int main()
 	// test.insert(ft::make_pair(37,77));
 	// std::cout<< " this is after " << std::endl;
 	// test.print_preorder(test.getroot(), "this is first node   ");
+
 	std::cout << std::endl;
 	test.print_preorder(test.getroot(), "this is first node   ");
 }

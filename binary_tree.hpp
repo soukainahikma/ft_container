@@ -13,8 +13,6 @@ namespace ft
 	{
 		T key_value;
 		node<T> *left;
-
-		int height;
 		node<T> *parent;
 		node<T> *right;
 	
@@ -57,7 +55,7 @@ namespace ft
 				std::cout << str<<"|" <<root->key_value.first << " "<< root->key_value.second << "|"<<std::endl;
 				print_inorder(root->right,"this is right        ");
 			}
-			node<T> *left_rotation(node<T> *node_to_rotate)
+			node<T> *right_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y;
 				node <T> *tmp;
@@ -69,11 +67,9 @@ namespace ft
 				node_to_rotate->right = tmp;
 				if(tmp != NULL)
 					tmp->parent  = node_to_rotate;
-				y->height = std::max(height(y->left), height(y->right)) +1;
-				node_to_rotate->height = std::max(height(node_to_rotate->left), height(node_to_rotate->right)) + 1;
 				return(y);
 			}
-			node<T> *right_rotation(node<T> *node_to_rotate)
+			node<T> *left_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y;
 				node<T> *tmp;
@@ -85,50 +81,55 @@ namespace ft
 				node_to_rotate->left = tmp;
 				if(tmp != NULL)
 					tmp->parent  = node_to_rotate;
-				y->height = std::max(height(y->left), height(y->right)) + 1;
-				node_to_rotate->height = std::max(height(node_to_rotate->left), height(node_to_rotate->right)) + 1;
 				return(y);
 			}
 			node<T> *left_right_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y = node_to_rotate->left;;
-				node_to_rotate->left = left_rotation(y);
-				return(right_rotation(node_to_rotate));
+				node_to_rotate->left = right_rotation(y);
+				return(left_rotation(node_to_rotate));
 			}
 			node<T> *right_left_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y = node_to_rotate->right;
-				node_to_rotate->right = right_rotation(y);
-				return(left_rotation(node_to_rotate));
+				node_to_rotate->right = left_rotation(y);
+				return(right_rotation(node_to_rotate));
 			}
-			int height(node<T> *node_)
+			int height_calculator(node<T> *node_)
 			{
-				if(node_== NULL)
-					return(0);
-				return(node_->height);
+				int h =0;
+				if(node_!= NULL)
+				{
+					int l_height = height_calculator(node_->left);
+					int r_height = height_calculator(node_->right);
+					int max_height= std::max(l_height,r_height);
+					h = max_height + 1;
+				}
+				return(h);
 			}
-			int get_balance(node<T> *node_)
+			int balance_factor(node<T> *node_)
 			{
-				if(node_ == NULL)
-					return(0);
-				return(height(node_->left) - height(node_->right));
+				int l_height = height_calculator(node_->left);
+				int r_height = height_calculator(node_->right);
+				int balance_factor_ = l_height - r_height ;
+				return(balance_factor_);
 			}
 			node<T> *balance(node<T> *node_)
 			{
-				int balance_factor_ = get_balance(node_);
+				int balance_factor_ = balance_factor(node_);
 				if(balance_factor_ > 1)
-				{ 
-					if(get_balance(node_->left) >= 0)
-						node_ = right_rotation(node_);
+				{
+					if(balance_factor(node_->left)> 0)
+						node_ = left_rotation(node_);
 					else
 						node_ = left_right_rotation(node_);
 				}
 				else if(balance_factor_ < -1)
 				{
-					if(get_balance(node_->right) > 0)
+					if(balance_factor(node_->right)> 0)
 						node_ = right_left_rotation(node_);
 					else
-						node_ = left_rotation(node_);
+						node_ = right_rotation(node_);
 				}
 				return(node_);
 			}
@@ -145,7 +146,6 @@ namespace ft
 					root_->left = NULL;
 					root_->right = NULL;
 					root_->parent = NULL;
-					root_->height = 1;
 					return(root_);
 				}
 				if(compare(key.first , root_->key_value.first))
@@ -153,15 +153,15 @@ namespace ft
 					node<T> *child = insert(key,root_->left);
 					root_->left = child;
 					child->parent = root_;
+					root_ = balance(root_);
 				}
 				else
 				{
 					node<T> *child = insert(key,root_->right);
 					root_->right = child;
 					child->parent = root_;
+					root_ = balance(root_);
 				}
-				root_->height = 1 + std::max(height(root_->left),height(root_->right));
-				root_ = balance(root_);
 				return(root_);
 			}
 			node<T> *btree_min(node<T> *root)
@@ -210,46 +210,46 @@ namespace ft
 					return(TWO_CHILDREN);
 				return(ZERO_CHILD);
 			}
-			node<T> *deletion_node(node<T>* root_,int key)
+			node<T> *deletion_node(node<T>* root,int key)
 			{
-				if(root_ == NULL)
-					return(root_);
+				if(root == NULL)
+					return(root);
 					/* come back here for compare */
-				if(key < root_->key_value.first)
+				if(key < root->key_value.first)
 				{
-					root_->left = deletion_node(root_->left,key);
+					root->left = deletion_node(root->left,key);
 				}
-				else if(key > root_->key_value.first)
+				else if(key > root->key_value.first)
 				{
-					root_->right = deletion_node(root_->right,key);
+					root->right = deletion_node(root->right,key);
 				}
 				else
 				{
-					int n_children = n_children_(root_);
+					int n_children = n_children_(root);
 					if(n_children == ZERO_CHILD)
 					{
-						node<T> *tmp = root_;
-						root_ = NULL;
+						node<T> *tmp = root;
+						root = NULL;
 						free(tmp);
 					}
 					else if(n_children == ONE_RIGHT_CHILD || n_children == ONE_LEFT_CHILD)
 					{
-						node<T> *tmp = root_->left? root_->left:root_->right;
-						root_->key_value = tmp->key_value;
+						node<T> *tmp = root->left? root->left:root->right;
+						root->key_value = tmp->key_value;
+						root->left = NULL;
 						free(tmp);
 					}
 					else if(n_children == TWO_CHILDREN)
 					{
-						node<T> *tmp = btree_min(root_->right);
-						root_->key_value = tmp->key_value;
-						root_->right = deletion_node(root_->right,tmp->key_value.first);
+						node<T> *tmp = btree_min(root->right);
+						root->key_value = tmp->key_value;
+						root->right = deletion_node(root->right,tmp->key_value.first);
 					}
 				}
-				if(root_ == NULL)
-					return(root_);
-				root_->height =  1 + std::max(height(root_->left), height(root_->right));
-				root_ = balance(root_);
-				return(root_);
+				if(root == NULL)
+					return(root);
+				// root = balance(root);
+				return(root);
 			}
 	};
 }
