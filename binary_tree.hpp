@@ -2,6 +2,10 @@
 #define BINARY_TREE_HPP
 #include <iostream>
 #include <map>
+#define ZERO_CHILD 0
+#define ONE_RIGHT_CHILD 1
+#define ONE_LEFT_CHILD -1
+#define TWO_CHILDREN 2
 namespace ft
 {
 	template <class T>
@@ -138,7 +142,6 @@ namespace ft
 				if(root_ == NULL)
 				{	
 					root_= allocator_type_.allocate(1);
-					// root_->key_value = key;
 					allocator_type_.construct(root_, key);
 					root_->left = NULL;
 					root_->right = NULL;
@@ -196,6 +199,55 @@ namespace ft
 					y = y->parent;
 				}
 				return(y);
+			}
+			int n_children_(node<T> *node)
+			{
+				if(node->right && node->left == NULL)
+					return(ONE_RIGHT_CHILD);
+				if(node->left && node->right == NULL)
+					return(ONE_LEFT_CHILD);
+				if(node->left && node->right)
+					return(TWO_CHILDREN);
+				return(ZERO_CHILD);
+			}
+			node<T> *deletion_node(node<T>* root,int key)
+			{
+				if(root == NULL)
+					return(root);
+					/* come back here for compare */
+				if(key < root->key_value.first)
+				{
+					root->left = deletion_node(root->left,key);
+				}
+				else if(key > root->key_value.first)
+				{
+					root->right = deletion_node(root->right,key);
+				}
+				else
+				{
+					int n_children = n_children_(root);
+					if(n_children == ZERO_CHILD)
+					{
+						node<T> *tmp = root;
+						root = NULL;
+						free(tmp);
+					}
+					else if(n_children == ONE_RIGHT_CHILD || n_children == ONE_LEFT_CHILD)
+					{
+						node<T> *tmp = root->left? root->left:root->right;
+						root->key_value = tmp->key_value;
+						free(tmp);
+					}
+					else if(n_children == TWO_CHILDREN)
+					{
+						node<T> *tmp = btree_min(root->right);
+						root->key_value = tmp->key_value;
+						root->right = deletion_node(root->right,tmp->key_value.first);
+					}
+				}
+				if(root == NULL)
+					return(root);
+				return(root);
 			}
 	};
 }

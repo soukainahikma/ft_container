@@ -5,15 +5,32 @@
 #include <map>
 int main()
 {
-	ft::map<int, int> mymap;
-	mymap.insert(ft::make_pair(50,60));
-	mymap.insert(ft::make_pair(40,60));
-	mymap.insert(ft::make_pair(100,60));
-	ft::map<int,int>::reverse_iterator it = mymap.end();
-	ft::map<int,int>::reverse_iterator it2 = it;
-	std::cout << (*it2).first<< " ===> " << it2->second << std::endl;
-	if(it != it2)
-		std::cout<< "they are equal"<< std::endl;
-	else
-	std::cout<< "they are not equal"<< std::endl;
+	ft::pair <int, int> pr = ft::make_pair(10,20);
+	ft::btree<ft::pair <int, int> > test;
+	// test.insert(pr);
+
+	test.insert_(ft::make_pair(50,10));
+	test.insert_(ft::make_pair(40,11));
+	test.insert_(ft::make_pair(30,12));
+	test.insert_(ft::make_pair(20,12));
+	// test.insert_(ft::make_pair(61,12));
+	// test.insert_(ft::make_pair(70,12));
+	// test.insert_(ft::make_pair(55,12));
+	// test.insert_(ft::make_pair(41,12));
+	// test.insert_(ft::make_pair(10,12));
+	// test.insert_(ft::make_pair(5,12));
+	test.print_preorder(test.getroot(), "this is first node   ");
+	test.deletion_node(test.getroot(),40);
+
+	// test.printer(test);
+	// ft::node<ft::pair <int, int> > *a = test.right_rotation(test.getroot());
+	// ft::node<ft::pair <int, int> > *b = test.balance(test.getroot());
+	// test.insert(ft::make_pair(16,15));
+	// test.insert(ft::make_pair(35,18));
+	// test.insert(ft::make_pair(30,19));
+	// test.insert(ft::make_pair(37,77));
+	// std::cout<< " this is after " << std::endl;
+	// test.print_preorder(test.getroot(), "this is first node   ");
+	// std::cout << std::endl;
+	test.print_preorder(test.getroot(), "this is first node   ");
 }
