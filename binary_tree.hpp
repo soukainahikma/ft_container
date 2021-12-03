@@ -27,6 +27,7 @@ namespace ft
 			typedef Allocator		allocator_type;
 
 		private:
+			node<T> *end_node;
 			node<T> *root;
 			allocator_type allocator_type_;
 			value_compare compare;
@@ -37,6 +38,7 @@ namespace ft
 			{
 				return(root);
 			}
+			node<T> *get_end_node(){return(end_node);}
 			void print_preorder(node<T> *root,std::string str)
 			{
 				if (root == nullptr) {
@@ -141,11 +143,13 @@ namespace ft
 			{
 				if(root_ == NULL)
 				{	
+					end_node = allocator_type_.allocate(1);
 					root_= allocator_type_.allocate(1);
 					allocator_type_.construct(root_, key);
 					root_->left = NULL;
 					root_->right = NULL;
-					root_->parent = NULL;
+					root_->parent = end_node;
+					end_node->left = root_;
 					return(root_);
 				}
 				if(compare(key.first , root_->key_value.first))
@@ -248,8 +252,21 @@ namespace ft
 				}
 				if(root == NULL)
 					return(root);
-				// root = balance(root);
+				root = balance(root);
 				return(root);
+			}
+			node<T> *Search_tree(node<T> *root_ , T key_value)
+			{
+				if(root_ != NULL)
+				{
+					if(root_->key_value.first == key_value.first)
+						return(root_);
+					if(compare(key_value.first,root_->key_value.first))
+						return(Search_tree(root_->left,key_value));
+					else
+						return(Search_tree(root_->right,key_value));
+				}
+				return(root_);
 			}
 	};
 }
