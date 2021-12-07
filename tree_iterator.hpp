@@ -102,17 +102,17 @@ namespace ft
 				return(root);
 			}
 			node<Tp> *node_successor(node<Tp> *x)
+			{
+				if(x->right != NULL)
+					return(btree_min(x->right));
+				node<Tp> *y = x->parent;
+				while(y !=NULL && x == y->right)
 				{
-					if(x->right != NULL)
-						return(btree_min(x->right));
-					node<Tp> *y = x->parent;
-					while(y !=NULL && x == y->right)
-					{
-						x = y;
-						y = y->parent;
-					}
-					return(y);
+					x = y;
+					y = y->parent;
 				}
+				return(y);
+			}
 			node<Tp> *node_predecessor(node<Tp> *x)
 			{
 				if(x->left != NULL)

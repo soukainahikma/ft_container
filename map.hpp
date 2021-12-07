@@ -34,32 +34,56 @@ namespace ft
 		private:
 			typedef btree<value_type, key_compare>           				__base;
 		public:
-			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()){}
+			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()){
+				size_of_tree = 0;
+			}
 			template <class InputIterator>
   			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(),typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
 			{
-				// last++;
 				while(first != last)
 				{
-					my_avl_tree.insert_(*first);
+					my_avl_tree.insert_avl(*first);
 					first++;
 				}
-				my_avl_tree.print_preorder(my_avl_tree.getroot(), "first node   ");
 			}
 		/* iterators ********************************** */
-			iterator begin(){return(iterator(my_avl_tree.btree_min(my_avl_tree.getroot())));};
-			const_iterator begin()const {return(const_iterator(my_avl_tree.btree_min(my_avl_tree.getroot())));};
-			iterator end(){return(iterator(my_avl_tree.get_end_node()));};
-		/* ********************************************** */
+			iterator begin(){return(iterator(my_avl_tree.btree_min()));};
+			const_iterator begin()const {return(const_iterator(my_avl_tree.btree_min()));};
+			iterator end(){
+				iterator it = my_avl_tree.btree_max();
+				if(it == NULL)
+					return(it);
+				return(++it);
+			};
+			const_iterator end() const{return(++const_iterator(my_avl_tree.btree_max()));};
+			reverse_iterator rend() {return(reverse_iterator (begin()));};
+			const_reverse_iterator rend() const{return(const_reverse_iterator (begin()));};
+			reverse_iterator rbegin(){return(reverse_iterator(end()));};
+			const_reverse_iterator rbegin() const {return(const_reverse_iterator(end()));};
+		/* Capacity  ********************************************** */
+			bool empty() const
+			{
+				if(my_avl_tree.empty())
+					return(true);
+				return(false);
+			}
+			size_type size() const{ return(size_of_tree); }
+			size_type max_size() const{return(allocator_type_.max_size());}
+			/* ***********operator[]********************************************* */
+			// back to understand how this operator works
+			mapped_type& operator[] (const key_type& k){ return((*((this->insert(ft::make_pair(k,mapped_type()))).first)).second); }
+		/* ********************modifiers***************************************** */
 			ft::pair<iterator,bool> insert (const value_type& val)
 			{
 				ft::pair<iterator,bool> pr;
-				node<value_type> *node_ = my_avl_tree.Search_tree(my_avl_tree.getroot(),val);
+				node<value_type> *node_ = my_avl_tree.Search_tree(val);
 				if(node_ == NULL)
 				{
+
 					pr.second = true;
-					my_avl_tree.insert_(val);
-					pr.first = my_avl_tree.Search_tree(my_avl_tree.getroot(),val);
+					my_avl_tree.insert_avl(val);
+					size_of_tree++;
+					pr.first = my_avl_tree.Search_tree(val);
 				}
 				else
 				{
@@ -69,13 +93,57 @@ namespace ft
 				return(pr);
 
 			}
+			iterator insert (iterator position, const value_type& val)
+			{
+				static_cast<void> (position);
+				return(insert(val).first);
+			}
+			template <class InputIterator>
+  			void insert (InputIterator first, InputIterator last,typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
+			{
+				while(first!= last)
+				{
+					insert(*first);
+					first++;
+				}
+			}
+			void erase (iterator position)
+			{
+				if(my_avl_tree.Search_tree(*position) != NULL)
+					size_of_tree--;
+				my_avl_tree.deletion_node(position->first);
+			}
+			size_type erase (const key_type& k)
+			{
+				if(my_avl_tree.Search_tree(ft::make_pair(k,mapped_type())) != NULL)
+				{
+					size_of_tree--;
+					my_avl_tree.deletion_node(k);
+					return(1);
+				}
+				return(0);
+			}
+			 void erase (iterator first, iterator last)
+			 {
+				 iterator tmp;
+				 while(first != last)
+				{
+
+					tmp = first;
+					// std::cout<< tmp->first <<std::endl;
+					first++;
+					erase(tmp);
+					// tmp++;
+				}
+			 }
 			void avl_printer()
 			{
-				my_avl_tree.print_preorder(my_avl_tree.getroot(),"this is first node   ");
+				my_avl_tree.print_preorder();
 			}
 		private:
 			allocator_type allocator_type_;
 			__base my_avl_tree;
+			size_type size_of_tree;
 	};
 };
 #endif

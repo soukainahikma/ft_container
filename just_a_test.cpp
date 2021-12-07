@@ -3,47 +3,36 @@
 #include <iostream>
 #include "map.hpp"
 #include <map>
-int main()
+int main ()
 {
-	
-	{std::cout<< "this result is for my_map "<<std::endl;
-	ft::map<int ,int> mymap;
-	mymap.insert(ft::make_pair(50,10));
-	mymap.insert(ft::make_pair(40,11));
-	mymap.insert(ft::make_pair(30,12));
-	mymap.insert(ft::make_pair(20,12));
-	mymap.insert(ft::make_pair(61,12));
-	mymap.insert(ft::make_pair(70,12));
-	mymap.insert(ft::make_pair(55,12));
-	mymap.insert(ft::make_pair(41,12));
-	mymap.insert(ft::make_pair(10,12));
-	mymap.insert(ft::make_pair(5,12));
-	mymap.insert(ft::make_pair(2,12));
-	ft::map<int,int>::iterator it= mymap.end();
-	mymap.avl_printer();
-	it--;
-	std::cout<< it->first << std::endl;}
-	{std::cout<< "this result is for the other map "<<std::endl;
-	std::map<int ,int> mymap;
-	mymap.insert(std::make_pair(50,10));
-	mymap.insert(std::make_pair(40,11));
-	mymap.insert(std::make_pair(30,12));
-	mymap.insert(std::make_pair(20,12));
-	mymap.insert(std::make_pair(61,12));
-	mymap.insert(std::make_pair(70,12));
-	mymap.insert(std::make_pair(55,12));
-	mymap.insert(std::make_pair(41,12));
-	mymap.insert(std::make_pair(10,12));
-	mymap.insert(std::make_pair(5,12));
-	mymap.insert(std::make_pair(2,12));
-	std::map<int,int>::iterator it= mymap.end();
-	it--;
-	std::cout<< it->first << std::endl;}
-	// std::map<int,int> range_map(mymap.begin(),mymap.end());
+  std::map<char,int> mymap;
+  std::map<char,int>::iterator it;
 
-	
-	//std::btree<std::pair<int, int> > = std::btree<std::pair<const int, int>>
+  // insert some values:
+  mymap['a']=10;
+  // mymap['b']=20;
+  // mymap['c']=30;
+  // mymap['d']=40;
+  // mymap['e']=50;
+  // mymap['f']=60;
+  // mymap.avl_printer();
+  mymap.erase('a');
+    it = mymap.end();
+it++;
+  std::cout << it->first << std::endl;
+  // it = mymap.begin();
+// for (it=mymap.begin(); it!=mymap.end(); ++it)
+//     std::cout << it->first << " => " << it->second << '\n';
+  // it=mymap.find('b');
+  // mymap.erase (mymap.begin());                   // erasing by iterator
 
-	
+  // mymap.erase ('c');                  // erasing by key
 
+  // it=mymap.find ('e');
+  // mymap.erase ( mymap.begin(), mymap.end() );    // erasing by range
+// mymap.avl_printer();
+  // show content:
+  
+
+  return 0;
 }

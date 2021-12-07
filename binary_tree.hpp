@@ -2,10 +2,12 @@
 #define BINARY_TREE_HPP
 #include <iostream>
 #include <map>
+
 #define ZERO_CHILD 0
 #define ONE_RIGHT_CHILD 1
 #define ONE_LEFT_CHILD -1
 #define TWO_CHILDREN 2
+
 namespace ft
 {
 	template <class T>
@@ -15,7 +17,6 @@ namespace ft
 		node<T> *left;
 		node<T> *parent;
 		node<T> *right;
-	
 		node(const T& src) : key_value(src){};
 	};
 	template <class T, class Compare= std::less<typename T::first_type>, class Allocator = std::allocator<node<T> > >
@@ -25,20 +26,35 @@ namespace ft
 			typedef T				value_type;
 			typedef Compare		value_compare;
 			typedef Allocator		allocator_type;
-
 		private:
 			node<T> *end_node;
 			node<T> *root;
 			allocator_type allocator_type_;
 			value_compare compare;
 		public:
-			btree(){ root = NULL;};
+			btree(){
+				// end_node = allocator_type_.allocate(1);
+				// root->parent = end_node;
+				// end_node->left = root;
+				 root = NULL;
+				 };
 			~btree(){};
-			node<T> *getroot()
+			void print_preorder(){ print_preorder(root,"this is first node   "); }
+			void print_inorder(){ print_inorder(root,"this is first node   "); }
+			node<T> *btree_min(){ return(btree_min(root));}
+			node<T> *btree_max(){ return(btree_max(root));}
+			//bach to this deletion to replace the int in the key
+			node<T> *deletion_node(int key){ 
+				root = deletion_node(root,key);
+				return(root); 
+				}
+			node<T> *Search_tree(T key_value){ return(Search_tree(root,key_value)); }
+			bool empty()
 			{
-				return(root);
+				if(root == NULL)
+					return(true);
+				return(false);
 			}
-			node<T> *get_end_node(){return(end_node);}
 			void print_preorder(node<T> *root,std::string str)
 			{
 				if (root == nullptr) {
@@ -135,21 +151,29 @@ namespace ft
 				}
 				return(node_);
 			}
-			void insert_(value_type key)
+			void insert_avl(value_type key)
 			{
+				if(root == NULL)
+				{
+					root= allocator_type_.allocate(1);
+					allocator_type_.construct(root, key);
+					root->left = NULL;
+					root->right = NULL;
+					return;
+				}
 				root = insert(key,root);
+				end_node = allocator_type_.allocate(1);
+				root->parent = end_node;
+				end_node->left = root;
 			}
 			node<T> *insert(value_type key, node<T> *root_)
 			{
 				if(root_ == NULL)
 				{	
-					end_node = allocator_type_.allocate(1);
 					root_= allocator_type_.allocate(1);
 					allocator_type_.construct(root_, key);
 					root_->left = NULL;
 					root_->right = NULL;
-					root_->parent = end_node;
-					end_node->left = root_;
 					return(root_);
 				}
 				if(compare(key.first , root_->key_value.first))
@@ -170,12 +194,16 @@ namespace ft
 			}
 			node<T> *btree_min(node<T> *root)
 			{
+				if(!root)
+					return(root);
 				while(root->left)
 					return(btree_min(root->left));
 				return(root);
 			}
 			node<T> *btree_max(node<T> *root)
 			{
+				if(!root)
+					return(root);
 				while(root->right)
 					return(btree_max(root->right));
 				return(root);
@@ -214,46 +242,51 @@ namespace ft
 					return(TWO_CHILDREN);
 				return(ZERO_CHILD);
 			}
-			node<T> *deletion_node(node<T>* root,int key)
+			node<T> *deletion_node(node<T>* root_,int key)
 			{
-				if(root == NULL)
-					return(root);
+				if(root_ == NULL)
+					return(root_);
 					/* come back here for compare */
-				if(key < root->key_value.first)
+				if(key < root_->key_value.first)
 				{
-					root->left = deletion_node(root->left,key);
+					root_->left = deletion_node(root_->left,key);
 				}
-				else if(key > root->key_value.first)
+				else if(key > root_->key_value.first)
 				{
-					root->right = deletion_node(root->right,key);
+					root_->right = deletion_node(root_->right,key);
 				}
 				else
 				{
-					int n_children = n_children_(root);
+					int n_children = n_children_(root_);
 					if(n_children == ZERO_CHILD)
 					{
-						node<T> *tmp = root;
-						root = NULL;
-						free(tmp);
+						node<T> *tmp = root_;
+						root_ = NULL;
+						allocator_type_.deallocate(root_,1);
 					}
 					else if(n_children == ONE_RIGHT_CHILD || n_children == ONE_LEFT_CHILD)
 					{
-						node<T> *tmp = root->left? root->left:root->right;
-						root->key_value = tmp->key_value;
-						root->left = NULL;
-						free(tmp);
+						node<T> *tmp = root_->left? root_->left:root_->right;
+						allocator_type_.construct(root_, tmp->key_value);
+						// root_->key_value = tmp->key_value;
+						if(n_children == ONE_RIGHT_CHILD )
+							root_->right = NULL;
+						else
+							root_->left = NULL;
+						allocator_type_.deallocate(tmp,1);
 					}
 					else if(n_children == TWO_CHILDREN)
 					{
-						node<T> *tmp = btree_min(root->right);
-						root->key_value = tmp->key_value;
-						root->right = deletion_node(root->right,tmp->key_value.first);
+						node<T> *tmp = btree_min(root_->right);
+						allocator_type_.construct(root_, tmp->key_value);
+						// root_->key_value = tmp->key_value;
+						root_->right = deletion_node(root_->right,tmp->key_value.first);
 					}
 				}
-				if(root == NULL)
-					return(root);
-				root = balance(root);
-				return(root);
+				if(root_ == NULL)
+					return(root_);
+				root_ = balance(root_);
+				return(root_);
 			}
 			node<T> *Search_tree(node<T> *root_ , T key_value)
 			{

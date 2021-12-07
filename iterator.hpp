@@ -196,9 +196,9 @@ namespace ft
 					return(ptr_toIter);
 				}
 				_reverseiterator(){/* ask if i have to fill default constructor */};
-				_reverseiterator(iterator_type it)
+				_reverseiterator(iterator_type it) : ptr_toIter(it)
 				{
-					this->ptr_toIter = it;
+					// this->ptr_toIter = it;
 				};
 				template<class Iter>
 				_reverseiterator(const _reverseiterator<Iter>& rev_it)
