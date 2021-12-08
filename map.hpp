@@ -5,9 +5,8 @@
 #include "pair.hpp"
 #include "tree_iterator.hpp"
 #include"iterator.hpp"
-#include"my_traits.hpp"
-#include <map>
-#include <vector>
+// #include"my_traits.hpp"
+#include "vector.hpp"
 namespace ft
 {
 	template < class Key, class T,class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair< const Key,T> > > 
@@ -150,7 +149,7 @@ namespace ft
 			void erase (iterator first, iterator last)
 			{
 				iterator tmp;
-				std::vector<key_type> vec;
+				ft::vector<key_type> vec;
 ////// FIXME !!!!!!!!!!!!this is a danger zone (REMEMBER TO CHANGE THE STD OF THE VECTOR AND WORK WITH MINE)!!!!!!!!!!!!!!!!!!!
 				while(first != last )
 				{
