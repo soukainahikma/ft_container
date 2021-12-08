@@ -100,18 +100,18 @@ namespace ft
 			ft::pair<iterator,bool> insert (const value_type& val)
 			{
 				ft::pair<iterator,bool> pr;
-				// size_t i = size();
+				size_t i = size();
 					my_avl_tree.insert_avl(val);
-				// if(i < size())
-				// {
-				// 	pr.second = true;
-				// 	pr.first = my_avl_tree.Search_tree(val);
-				// }
-				// else
-				// {
-				// 	pr.first = NULL;
-				// 	pr.second = false;
-				// }
+				if(i < size())
+				{
+					pr.second = true;
+					pr.first = my_avl_tree.Search_tree(val);
+				}
+				else
+				{
+					pr.first = NULL;
+					pr.second = false;
+				}
 				return(pr);
 
 			}
@@ -234,7 +234,23 @@ namespace ft
 				}
 				return(ite);
 			 }
-			// const_iterator upper_bound (const key_type& k) const;
+			const_iterator upper_bound (const key_type& k) const
+			{
+				const_iterator itb = begin();
+				const_iterator ite = end();
+				while(itb != ite)
+				{
+					if(!comp(k,itb->first))
+						itb++;
+					else
+						return(itb);
+				}
+				return(ite);
+			}
+			pair<iterator,iterator>	equal_range (const key_type& k)
+			{
+				return(ft::make_pair(lower_bound(k),upper_bound(k)));
+			}
 			/* ***Observers:************************************** */
 			key_compare key_comp() const
 			{
@@ -243,6 +259,10 @@ namespace ft
 			value_compare value_comp() const
 			{
 				return(value_compare(comp));
+			}
+			allocator_type get_allocator() const
+			{
+				return(allocator_type_);
 			}
 			void avl_printer()
 			{

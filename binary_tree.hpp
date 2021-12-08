@@ -17,6 +17,7 @@ namespace ft
 		node<T> *left;
 		node<T> *parent;
 		node<T> *right;
+		int height;
 		node(const T& src) : key_value(src){};
 	};
 	template <class T, class Compare= std::less<typename T::first_type>, class Allocator = std::allocator<node<T> > >
@@ -32,14 +33,16 @@ namespace ft
 			allocator_type		allocator_type_;
 			value_compare		compare;
 			size_t				bsize;
+			
 		public:
 			btree(){
-				// end_node = allocator_type_.allocate(1);
-				// root->parent = end_node;
-				// end_node->left = root;
-				 root = NULL;
-				 bsize = 0;
-				 };
+			// end_node = allocator_type_.allocate(1);
+			// root->parent = end_node;
+			// end_node->left = root;
+			 root = NULL;
+			 bsize = 0;
+			//  root->height = 0;
+			};
 			~btree(){};//fix me
 			size_t size_btree()const { return(bsize); }
 			void print_preorder(){ print_preorder(root,"this is first node   "); }
@@ -76,7 +79,7 @@ namespace ft
 				std::cout << str<<"|" <<root->key_value.first << " "<< root->key_value.second << "|"<<std::endl;
 				print_inorder(root->right,"this is right        ");
 			}
-			node<T> *right_rotation(node<T> *node_to_rotate)
+			node<T> *left_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y;
 				node <T> *tmp;
@@ -88,9 +91,11 @@ namespace ft
 				node_to_rotate->right = tmp;
 				if(tmp != NULL)
 					tmp->parent  = node_to_rotate;
+				y->height = std::max(height(y->left), height(y->right)) +1;
+				node_to_rotate->height = std::max(height(node_to_rotate->left), height(node_to_rotate->right)) + 1;
 				return(y);
 			}
-			node<T> *left_rotation(node<T> *node_to_rotate)
+			node<T> *right_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y;
 				node<T> *tmp;
@@ -102,66 +107,64 @@ namespace ft
 				node_to_rotate->left = tmp;
 				if(tmp != NULL)
 					tmp->parent  = node_to_rotate;
+				y->height = std::max(height(y->left), height(y->right)) + 1;
+				node_to_rotate->height = std::max(height(node_to_rotate->left), height(node_to_rotate->right)) + 1;
 				return(y);
 			}
 			node<T> *left_right_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y = node_to_rotate->left;;
-				node_to_rotate->left = right_rotation(y);
-				return(left_rotation(node_to_rotate));
+				node_to_rotate->left = left_rotation(y);
+				return(right_rotation(node_to_rotate));
 			}
 			node<T> *right_left_rotation(node<T> *node_to_rotate)
 			{
 				node<T> *y = node_to_rotate->right;
-				node_to_rotate->right = left_rotation(y);
-				return(right_rotation(node_to_rotate));
+				node_to_rotate->right = right_rotation(y);
+				return(left_rotation(node_to_rotate));
 			}
-			int height_calculator(node<T> *node_)
+			int height(node<T> *node_)
 			{
-				int h =0;
-				if(node_!= NULL)
-				{
-					int l_height = height_calculator(node_->left);
-					int r_height = height_calculator(node_->right);
-					int max_height= std::max(l_height,r_height);
-					h = max_height + 1;
-				}
-				return(h);
+				if(node_== NULL)
+					return(0);
+				return(node_->height);
 			}
-			int balance_factor(node<T> *node_)
+			int get_balance(node<T> *node_)
 			{
-				int l_height = height_calculator(node_->left);
-				int r_height = height_calculator(node_->right);
-				int balance_factor_ = l_height - r_height ;
-				return(balance_factor_);
+				if(node_ == NULL)
+					return(0);
+				return(height(node_->left) - height(node_->right));
 			}
 			node<T> *balance(node<T> *node_)
 			{
-				int balance_factor_ = balance_factor(node_);
+				int balance_factor_ = get_balance(node_);
+				// std::cout<< "balance_factor  " << balance_factor_ << std::endl;
 				if(balance_factor_ > 1)
-				{
-					if(balance_factor(node_->left)> 0)
-						node_ = left_rotation(node_);
+				{ 
+					if(get_balance(node_->left) >= 0)
+						node_ = right_rotation(node_);
 					else
 						node_ = left_right_rotation(node_);
 				}
 				else if(balance_factor_ < -1)
 				{
-					if(balance_factor(node_->right)> 0)
+					if(get_balance(node_->right) > 0)
 						node_ = right_left_rotation(node_);
 					else
-						node_ = right_rotation(node_);
+						node_ = left_rotation(node_);
 				}
 				return(node_);
 			}
 			void insert_avl(value_type const &key)
 			{
+					// std::cout<< "here"<<std::endl;
 				if(root == NULL)
 				{
 					root= allocator_type_.allocate(1);
 					allocator_type_.construct(root, key);
 					root->left = NULL;
 					root->right = NULL;
+					root->height = 1;
 					bsize++;
 					return;
 				}
@@ -178,6 +181,7 @@ namespace ft
 					allocator_type_.construct(root_, key);
 					root_->left = NULL;
 					root_->right = NULL;
+					root_->height = 1;
 					bsize++;
 					return(root_);
 				}
@@ -186,7 +190,7 @@ namespace ft
 					node<T> *child = insert(key,root_->left);
 					root_->left = child;
 					child->parent = root_;
-					root_ = balance(root_);
+
 				}
 				else if(key.first == root_->key_value.first)
 					return(root_);
@@ -195,9 +199,9 @@ namespace ft
 					node<T> *child = insert(key,root_->right);
 					root_->right = child;
 					child->parent = root_;
-					root_ = balance(root_);
-					// bsize++;
 				}
+				root_->height = 1 + std::max(height(root_->left),height(root_->right));
+				root_ = balance(root_);
 				return(root_);
 			}
 			node<T> *btree_min(node<T> *root)

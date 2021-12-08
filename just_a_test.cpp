@@ -4,33 +4,22 @@
 #include "map.hpp"
 #include <map>
 #include<vector>
-/* int main ()
-{
-  ft::map<char,int> mymap;
-  ft::map<char,int>::iterator itlow,itup;
-
-  mymap['a']=20;
-  mymap['b']=40;
-  mymap['c']=60;
-  mymap['d']=80;
-  mymap['e']=100;
-
-  itlow=mymap.lower_bound ('b');  // itlow points to b
-  itup=mymap.upper_bound ('d');   // itup points to e (not d!)
-
-  mymap.erase(itlow,itup);        // erases [itlow,itup)
-
-  // print content:
-  for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
-
-  return 0;
-  
-} */
-int main()
+int main ()
 {
   ft::map<int,int> mymap;
-  for(size_t i =0 ; i< 100000 ; i++)
-    mymap[i] = i;
-  // mymap.erase(++mymap.begin() , --mymap.end());
+
+  mymap[1]=10;
+  mymap[2]=20;
+  mymap[3]=30;
+
+  ft::pair<ft::map<int,int>::iterator,ft::map<int,int>::iterator> ret;
+  ret = mymap.equal_range(-1);
+
+  std::cout << "lower bound points to: ";
+  std::cout << ret.first->first << " => " << ret.first->second << '\n';
+
+  std::cout << "upper bound points to: ";
+  std::cout << ret.second->first << " => " << ret.second->second << '\n';
+
+  return 0;
 }
