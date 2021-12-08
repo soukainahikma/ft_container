@@ -46,7 +46,19 @@ namespace ft
 		tree_iterator(){};
 		tree_iterator(node_type node)
 		{
+			//fix me (think about the deep copy)
 			node_ = node;
+		}
+		node_type base()
+		{
+			return(node_);
+		}
+		template<class T>
+		tree_iterator(const tree_iterator<T,Iter> &treeIter):node_(treeIter.base()){}
+		tree_iterator<Tp,Iter> &operator=(const tree_iterator& treeIter)
+		{
+			node_ = treeIter.node_;
+			return(*this);
 		}
 		node_type base() const
 		{
@@ -64,7 +76,7 @@ namespace ft
 			return(*this);
 		}
 		tree_iterator operator++(int)
-		{	
+		{
 			tree_iterator result;
 			result = *this;
 			node_ = node_successor(node_);

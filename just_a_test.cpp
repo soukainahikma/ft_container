@@ -3,36 +3,34 @@
 #include <iostream>
 #include "map.hpp"
 #include <map>
-int main ()
+#include<vector>
+/* int main ()
 {
-  std::map<char,int> mymap;
-  std::map<char,int>::iterator it;
+  ft::map<char,int> mymap;
+  ft::map<char,int>::iterator itlow,itup;
 
-  // insert some values:
-  mymap['a']=10;
-  // mymap['b']=20;
-  // mymap['c']=30;
-  // mymap['d']=40;
-  // mymap['e']=50;
-  // mymap['f']=60;
-  // mymap.avl_printer();
-  mymap.erase('a');
-    it = mymap.end();
-it++;
-  std::cout << it->first << std::endl;
-  // it = mymap.begin();
-// for (it=mymap.begin(); it!=mymap.end(); ++it)
-//     std::cout << it->first << " => " << it->second << '\n';
-  // it=mymap.find('b');
-  // mymap.erase (mymap.begin());                   // erasing by iterator
+  mymap['a']=20;
+  mymap['b']=40;
+  mymap['c']=60;
+  mymap['d']=80;
+  mymap['e']=100;
 
-  // mymap.erase ('c');                  // erasing by key
+  itlow=mymap.lower_bound ('b');  // itlow points to b
+  itup=mymap.upper_bound ('d');   // itup points to e (not d!)
 
-  // it=mymap.find ('e');
-  // mymap.erase ( mymap.begin(), mymap.end() );    // erasing by range
-// mymap.avl_printer();
-  // show content:
-  
+  mymap.erase(itlow,itup);        // erases [itlow,itup)
+
+  // print content:
+  for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
 
   return 0;
+  
+} */
+int main()
+{
+  ft::map<int,int> mymap;
+  for(size_t i =0 ; i< 100000 ; i++)
+    mymap[i] = i;
+  // mymap.erase(++mymap.begin() , --mymap.end());
 }

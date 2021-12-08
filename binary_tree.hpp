@@ -27,18 +27,21 @@ namespace ft
 			typedef Compare		value_compare;
 			typedef Allocator		allocator_type;
 		private:
-			node<T> *end_node;
-			node<T> *root;
-			allocator_type allocator_type_;
-			value_compare compare;
+			node<T>				*end_node;
+			node<T>				*root;
+			allocator_type		allocator_type_;
+			value_compare		compare;
+			size_t				bsize;
 		public:
 			btree(){
 				// end_node = allocator_type_.allocate(1);
 				// root->parent = end_node;
 				// end_node->left = root;
 				 root = NULL;
+				 bsize = 0;
 				 };
-			~btree(){};
+			~btree(){};//fix me
+			size_t size_btree()const { return(bsize); }
 			void print_preorder(){ print_preorder(root,"this is first node   "); }
 			void print_inorder(){ print_inorder(root,"this is first node   "); }
 			node<T> *btree_min(){ return(btree_min(root));}
@@ -48,7 +51,7 @@ namespace ft
 				root = deletion_node(root,key);
 				return(root); 
 				}
-			node<T> *Search_tree(T key_value){ return(Search_tree(root,key_value)); }
+			node<T> *Search_tree(T key_value)const { return(Search_tree(root,key_value)); }
 			bool empty()
 			{
 				if(root == NULL)
@@ -151,7 +154,7 @@ namespace ft
 				}
 				return(node_);
 			}
-			void insert_avl(value_type key)
+			void insert_avl(value_type const &key)
 			{
 				if(root == NULL)
 				{
@@ -159,6 +162,7 @@ namespace ft
 					allocator_type_.construct(root, key);
 					root->left = NULL;
 					root->right = NULL;
+					bsize++;
 					return;
 				}
 				root = insert(key,root);
@@ -166,7 +170,7 @@ namespace ft
 				root->parent = end_node;
 				end_node->left = root;
 			}
-			node<T> *insert(value_type key, node<T> *root_)
+			node<T> *insert(value_type const &key, node<T> *root_)
 			{
 				if(root_ == NULL)
 				{	
@@ -174,6 +178,7 @@ namespace ft
 					allocator_type_.construct(root_, key);
 					root_->left = NULL;
 					root_->right = NULL;
+					bsize++;
 					return(root_);
 				}
 				if(compare(key.first , root_->key_value.first))
@@ -183,12 +188,15 @@ namespace ft
 					child->parent = root_;
 					root_ = balance(root_);
 				}
+				else if(key.first == root_->key_value.first)
+					return(root_);
 				else
 				{
 					node<T> *child = insert(key,root_->right);
 					root_->right = child;
 					child->parent = root_;
 					root_ = balance(root_);
+					// bsize++;
 				}
 				return(root_);
 			}
@@ -282,13 +290,14 @@ namespace ft
 						// root_->key_value = tmp->key_value;
 						root_->right = deletion_node(root_->right,tmp->key_value.first);
 					}
+					bsize--;
 				}
 				if(root_ == NULL)
 					return(root_);
 				root_ = balance(root_);
 				return(root_);
 			}
-			node<T> *Search_tree(node<T> *root_ , T key_value)
+			node<T> *Search_tree(node<T> *root_ , T key_value) const
 			{
 				if(root_ != NULL)
 				{
