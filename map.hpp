@@ -1,37 +1,33 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 #include <iostream>
-#include "binary_tree.hpp"
+#include "avl_tree.hpp"
 #include "pair.hpp"
 #include "tree_iterator.hpp"
 #include"iterator.hpp"
-// #include"my_traits.hpp"
 #include "vector.hpp"
 namespace ft
 {
 	template < class Key, class T,class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair< const Key,T> > > 
 	class map
 	{
-		
 		public:
 			typedef Key																key_type;
 			typedef T																mapped_type;
-			typedef ft::pair< const key_type, mapped_type>								value_type;
+			typedef ft::pair< const key_type, mapped_type>							value_type;
 			typedef Compare															key_compare;
 			typedef Alloc															allocator_type;
 			typedef typename allocator_type::reference								reference;
 			typedef typename allocator_type::const_reference						const_reference;
 			typedef typename ft::node<value_type>*									pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
-
 			typedef tree_iterator<value_type, pointer>								iterator;
 			typedef tree_iterator<const value_type, pointer>						const_iterator;
 			typedef ft::_reverseiterator<iterator>									reverse_iterator;
 			typedef ft::_reverseiterator<const_iterator>							const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type				difference_type;
-			typedef size_t											size_type;
+			typedef size_t															size_type;
 
-			// template <class Key_, class T, class Compare, class Alloc>
 			class value_compare:public std::binary_function<value_type,value_type,bool>
 			{
 				friend class map;
@@ -46,11 +42,10 @@ namespace ft
 						{ return comp(x.first, y.first); }
 			};
 		private:
-			typedef btree<value_type, key_compare>           				__base;
+			typedef avl_tree<value_type, key_compare,allocator_type>			__base;
 		public:
-			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()){
-				// size_of_tree = 0;
-			}
+			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):
+			allocator_type_(alloc),my_avl_tree(),comp(comp){}
 			template <class InputIterator>
   			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(),typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
 			{
@@ -60,42 +55,41 @@ namespace ft
 					first++;
 				}
 			}
-			/* assingment operator */
+			map (const map& x) {*this = x;}
 			map& operator= (const map& x)
 			{
-				// x.allocator_type_ make sure if we copy the allocator too;
-				// this->size_of_tree = x.size_of_tree;
-				// make sure to add the assigment operator in the btree to make a deep copy;
-				this->my_avl_tree = x.my_avl_tree;
+				my_avl_tree.clear();
+				this->insert(x.begin(),x.end());
 				return(*this);
 			}
-		/* iterators ********************************** */
-			iterator begin(){return(iterator(my_avl_tree.btree_min()));};
-			const_iterator begin()const {return(const_iterator(my_avl_tree.btree_min()));};
+			~map(){};
+			iterator begin(){return(iterator(my_avl_tree.avl_tree_min()));};
+			const_iterator begin()const {return(const_iterator(my_avl_tree.avl_tree_min()));};
 			iterator end(){
-				iterator it = my_avl_tree.btree_max();
+				iterator it = my_avl_tree.avl_tree_max();
 				if(it == NULL)
 					return(it);
 				return(++it);
 			};
-			const_iterator end() const{return(++const_iterator(my_avl_tree.btree_max()));};
+			const_iterator end() const{
+				const_iterator it = my_avl_tree.avl_tree_max();
+				if(it == NULL)
+					return(it);
+				return(++it);
+			}
 			reverse_iterator rend() {return(reverse_iterator (begin()));};
 			const_reverse_iterator rend() const{return(const_reverse_iterator (begin()));};
 			reverse_iterator rbegin(){return(reverse_iterator(end()));};
 			const_reverse_iterator rbegin() const {return(const_reverse_iterator(end()));};
-		/* Capacity  ********************************************** */
 			bool empty() const
 			{
 				if(my_avl_tree.empty())
 					return(true);
 				return(false);
 			}
-			size_type size() const{ return(my_avl_tree.size_btree()); }
-			size_type max_size() const{return(allocator_type_.max_size());}
-			/* ***********operator[]********************************************* */
-			// back to understand how this operator works
+			size_type size() const{ return(my_avl_tree.size_avl_tree()); }
+			size_type max_size() const{return(my_avl_tree.max_size());}
 			mapped_type& operator[] (const key_type& k){ return((*((this->insert(ft::make_pair(k,mapped_type()))).first)).second); }
-		/* ********************modifiers***************************************** */
 			ft::pair<iterator,bool> insert (const value_type& val)
 			{
 				ft::pair<iterator,bool> pr;
@@ -112,7 +106,6 @@ namespace ft
 					pr.second = false;
 				}
 				return(pr);
-
 			}
 			iterator insert (iterator position, const value_type& val)
 			{
@@ -130,27 +123,20 @@ namespace ft
 			}
 			void erase (iterator position)
 			{
-				// if(my_avl_tree.Search_tree(*position) != NULL)
-					// size_of_tree--;
-				my_avl_tree.deletion_node(position->first);
+				my_avl_tree.deletion_node(ft::make_pair(position->first,position->second));
 			}
 			size_type erase (const key_type& k)
 			{
-				// if(my_avl_tree.Search_tree(ft::make_pair(k,mapped_type())) != NULL)
-				// {
-					// size_of_tree--;
 					size_t i = size();
-					my_avl_tree.deletion_node(k);
-					if(i< size())
+					my_avl_tree.deletion_node(ft::make_pair(k,mapped_type()));
+					if( size() < i )
 						return(1);
-				// }
 				return(0);
 			}
 			void erase (iterator first, iterator last)
 			{
 				iterator tmp;
 				ft::vector<key_type> vec;
-////// FIXME !!!!!!!!!!!!this is a danger zone (REMEMBER TO CHANGE THE STD OF THE VECTOR AND WORK WITH MINE)!!!!!!!!!!!!!!!!!!!
 				while(first != last )
 				{
 					vec.push_back(first->first);
@@ -170,7 +156,6 @@ namespace ft
 			{
 				erase(begin(),end());
 			}
-			/* ***Operations************************************** */
 			iterator find (const key_type& k)
 			{
 				node<value_type> *node_ = my_avl_tree.Search_tree(ft::make_pair(k,mapped_type()));
@@ -178,16 +163,13 @@ namespace ft
 					return(end());
 				return(iterator(node_));
 			}
-			//go back to the const_iterators see if its working and fix them if not
 			const_iterator find (const key_type& k) const
 			{
 				node<value_type> *node_ = my_avl_tree.Search_tree(ft::make_pair(k,mapped_type()));
 				if(node_ == NULL)
 					return(end());
 				return(const_iterator(node_));
-
 			}
-
 			size_type count (const key_type& k) const
 			{
 				if(my_avl_tree.Search_tree(ft::make_pair(k,mapped_type())) != NULL)
@@ -220,8 +202,8 @@ namespace ft
 				}
 				return(ite);
 			}
-			 iterator upper_bound (const key_type& k)
-			 {
+			iterator upper_bound (const key_type& k)
+			{
 				iterator itb = begin();
 				iterator ite = end();
 				while(itb != ite)
@@ -232,7 +214,7 @@ namespace ft
 						return(itb);
 				}
 				return(ite);
-			 }
+			}
 			const_iterator upper_bound (const key_type& k) const
 			{
 				const_iterator itb = begin();
@@ -246,31 +228,17 @@ namespace ft
 				}
 				return(ite);
 			}
-			pair<iterator,iterator>	equal_range (const key_type& k)
-			{
-				return(ft::make_pair(lower_bound(k),upper_bound(k)));
-			}
-			/* ***Observers:************************************** */
-			key_compare key_comp() const
-			{
-				return(comp);
-			}
-			value_compare value_comp() const
-			{
-				return(value_compare(comp));
-			}
-			allocator_type get_allocator() const
-			{
-				return(allocator_type_);
-			}
-			void avl_printer()
-			{
-				my_avl_tree.print_preorder();
-			}
+			pair<iterator,iterator>	equal_range (const key_type& k){return(ft::make_pair(lower_bound(k),upper_bound(k)));}
+			key_compare key_comp() const{return(comp);}
+			value_compare value_comp() const {return(value_compare(comp));}
+			allocator_type get_allocator() const{return(allocator_type_);}
+			// void avl_printer()
+			// {
+			// 	my_avl_tree.print_preorder();
+			// }
 		private:
 			allocator_type allocator_type_;
 			__base my_avl_tree;
-			// size_type size_of_tree;
 			key_compare comp;
 	};
 };

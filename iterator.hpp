@@ -1,55 +1,15 @@
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
 #include <iostream>
+#include "my_traits.hpp"
 namespace ft
 {
-	template <typename T>
-	struct iterator_traits {
-		typedef typename T::value_type				value_type;
-		typedef typename T::difference_type			difference_type;
-		typedef typename T::iterator_category		iterator_category;
-		typedef typename T::pointer					pointer;
-		typedef typename T::reference				reference;
-	};
-
-	template<typename T>
-	struct iterator_traits<T*>
-	{
-		typedef std::random_access_iterator_tag	iterator_category;
-		typedef T								value_type;
-		typedef T*								pointer;
-		typedef T&								reference;
-		typedef std::ptrdiff_t					difference_type;
-	};
-
-	template<typename T>
-	struct iterator_traits< const T*>
-	{
-		typedef std::random_access_iterator_tag	iterator_category;
-		typedef T								value_type;
-		typedef const T*						const_pointer;
-		typedef const T&						const_reference;
-		typedef std::ptrdiff_t					difference_type;
-	};
-
-	template<class Category, class T, class Distance = std::ptrdiff_t,
-			 class Pointer = T*, class Reference = T&>
-	struct __iterator
-	{
-		typedef T								value_type;
-		typedef Distance						difference_type;
-		typedef Pointer							pointer;
-		typedef Reference						reference;
-		typedef Category						iterator_category;
-	};
-
 	template<class Iterator>
-	class _iterator
+	class _iterator:public __iterator<std::random_access_iterator_tag,
+							typename iterator_traits<Iterator>::value_type >
 	{
 		public:
 			typedef Iterator													iterator_type;
-			typedef typename iterator_traits<iterator_type>::value_type			value_type;
-			typedef typename iterator_traits<iterator_type>::iterator_category	iterator_category;
 			typedef typename iterator_traits<iterator_type>::difference_type	difference_type;
 			typedef typename iterator_traits<iterator_type>::reference			reference;
 			typedef typename iterator_traits<iterator_type>::pointer			pointer;

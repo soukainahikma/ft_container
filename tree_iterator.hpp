@@ -1,47 +1,19 @@
 #ifndef TREE_ITERATOR_HPP
 #define TREE_ITERATOR_HPP
 #include <iostream>
-#include "binary_tree.hpp"
+#include "avl_tree.hpp"
 #include "iterator.hpp"
 namespace ft
 {
-	// template <typename T>
-	// struct iterator_traits {
-	// 	typedef typename T::value_type				value_type;
-	// 	typedef typename T::difference_type			difference_type;
-	// 	typedef typename T::iterator_category		iterator_category;
-	// 	typedef typename T::pointer					pointer;
-	// 	typedef typename T::reference				reference;
-	// };
-
-	// template<typename T>
-	// struct iterator_traits<T*>
-	// {
-	// 	typedef std::bidirectional_iterator_tag	iterator_category;
-	// 	typedef T								value_type;
-	// 	typedef T*								pointer;
-	// 	typedef T&								reference;
-	// 	typedef std::ptrdiff_t					difference_type;
-	// };
-	// template<typename T>
-	// struct iterator_traits< const T*>
-	// {
-	// 	typedef std::bidirectional_iterator_tag	iterator_category;
-	// 	typedef T								value_type;
-	// 	typedef const T*						const_pointer;
-	// 	typedef const T&						const_reference;
-	// 	typedef std::ptrdiff_t					difference_type;
-	// };
 	template<class Tp,class Iter>
-	class tree_iterator
+	class tree_iterator:public __iterator<std::bidirectional_iterator_tag,
+							typename iterator_traits<Tp*>::value_type >
 	{
 		public:
 			typedef Iter														node_type;
-			typedef typename iterator_traits<node_type>::iterator_category		iterator_category;
-			typedef typename iterator_traits<node_type>::difference_type		difference_type;
-			typedef typename iterator_traits<node_type>::value_type			value_type;
-			typedef Tp&															reference;
-			typedef Tp*															pointer;
+			typedef std::bidirectional_iterator_tag								iterator_category;
+			typedef typename iterator_traits<Tp*>::reference					reference;
+			typedef typename iterator_traits<Tp*>::pointer						pointer;
 		public:
 		tree_iterator(){};
 		tree_iterator(node_type node)
@@ -101,23 +73,23 @@ namespace ft
 		{	return __x.node_ != __y.node_;}
 		private:
 			node_type node_;
-			node<Tp> *btree_min(node<Tp> *root)
+			node_type btree_min(node_type root)
 			{
 				while(root->left)
 					return(btree_min(root->left));
 				return(root);
 			}
-			node<Tp> *btree_max(node<Tp> *root)
+			node_type btree_max(node_type root)
 			{
 				while(root->right)
 					return(btree_max(root->right));
 				return(root);
 			}
-			node<Tp> *node_successor(node<Tp> *x)
+			node_type node_successor(node_type x)
 			{
 				if(x->right != NULL)
 					return(btree_min(x->right));
-				node<Tp> *y = x->parent;
+				node_type y = x->parent;
 				while(y !=NULL && x == y->right)
 				{
 					x = y;
@@ -125,11 +97,11 @@ namespace ft
 				}
 				return(y);
 			}
-			node<Tp> *node_predecessor(node<Tp> *x)
+			node_type node_predecessor(node_type x)
 			{
 				if(x->left != NULL)
 					return(btree_max(x->left));
-				node<Tp> *y = x->parent;
+				node_type y = x->parent;
 				while(y !=NULL && x == y->left)
 				{
 					x = y;
