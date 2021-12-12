@@ -22,6 +22,7 @@ namespace ft
 			typedef typename ft::node<value_type>*									pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
 			typedef tree_iterator<value_type, pointer>								iterator;
+			//come back here for const in the pointer
 			typedef tree_iterator<const value_type, pointer>						const_iterator;
 			typedef ft::_reverseiterator<iterator>									reverse_iterator;
 			typedef ft::_reverseiterator<const_iterator>							const_reverse_iterator;

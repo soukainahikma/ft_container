@@ -289,7 +289,7 @@ namespace ft
 					{
 						node<value_type> *tmp = root_;
 						root_ = NULL;
-						allocator_type_.deallocate(root_,1);
+						allocator_type_.deallocate(tmp,1);
 					}
 					else if(n_children == ONE_RIGHT_CHILD || n_children == ONE_LEFT_CHILD)
 					{

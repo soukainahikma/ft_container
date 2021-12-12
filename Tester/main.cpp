@@ -4,17 +4,19 @@
 
 int main ()
 {
-   std::cout << "- Relational operators for vector" << std::endl;
-  {  std::vector<int> foo (1,200);   // three ints with a value of 100
-    std::vector<int> bar (1,100);   // two ints with a value of 200
-
-    if (foo==bar) std::cout << "foo and bar are equal\n";
-    if (foo!=bar) std::cout << "foo and bar are not equal\n";
-    if (foo< bar) std::cout << "foo is less than bar\n";
-    if (foo> bar) std::cout << "foo is greater than bar\n";
-    if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
-    if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
-	}
+ std::cout << "- Erase elements" << std::endl;
+    {ft::vector<int> myvector1;
+    for (int i=1; i<=10; i++) myvector1.push_back(i);
+    std::cout << myvector1.size() << std::endl;
+    std::cout << myvector1.capacity() << std::endl;
+    myvector1.erase (myvector1.begin() - 1);
+    myvector1.erase (myvector1.begin(),myvector1.begin()+3);
+    std::cout << myvector1.size() << std::endl;
+    std::cout << myvector1.capacity() << std::endl;
+    std::cout << "myvector contains:";
+    for (unsigned i=0; i<myvector1.size(); ++i)
+        std::cout << ' ' << myvector1[i];
+    std::cout << std::endl;}
  
     
 }

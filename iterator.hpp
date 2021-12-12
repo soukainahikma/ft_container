@@ -25,16 +25,7 @@ namespace ft
 					ptr_toIter = ptr;
 				};
 				template<class Iter>
-				_iterator(const _iterator<Iter> & rev_it)// copy constructor
-				{
-					*this = rev_it;
-				};
-				// ~_iterator(){}; does reverse iterator have deconstructor
-				_iterator<Iterator>&  operator=(const _iterator<Iterator>& rawIterator)//see if we have to use std:: allocate or new
-				{
-					this->ptr_toIter = rawIterator.ptr_toIter;
-					return(*this);
-				};
+				_iterator(const _iterator<Iter> & rev_it):ptr_toIter(rev_it.base()){};
 				reference operator*() const
 				{
 					return *ptr_toIter;
@@ -138,7 +129,7 @@ namespace ft
 	template <class Iterator>
 	typename _iterator<Iterator>::difference_type operator- (const _iterator<Iterator>& lhs,const _iterator<Iterator>& rhs)
 	{
-		return(rhs.base() - lhs.base());
+		return( lhs.base() - rhs.base());
 	};
 	
 	template<class Iterator>
@@ -164,12 +155,6 @@ namespace ft
 				_reverseiterator(const _reverseiterator<Iter>& rev_it)
 				{
 					*this = rev_it;
-				};
-				// ~_reverseiterator(){}; does reverse iterator have deconstructor
-				_reverseiterator<Iterator>&	operator=(const _reverseiterator<Iterator>& rawIterator)
-				{
-					this->ptr_toIter = rawIterator.ptr_toIter;
-					return(*this);
 				};
 				reference operator*() const
 				{
@@ -274,7 +259,7 @@ namespace ft
 	template <class Iterator>
 	typename _reverseiterator<Iterator>::difference_type operator- (const _reverseiterator<Iterator>& lhs,const _reverseiterator<Iterator>& rhs)
 	{
-		return(rhs.base() - lhs.base());
+		return(lhs.base() -rhs.base());
 	};
 };
 #endif

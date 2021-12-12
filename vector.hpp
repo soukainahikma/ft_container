@@ -20,17 +20,17 @@ namespace ft
 			typedef _iterator<pointer>									iterator;
 			typedef _reverseiterator<iterator>							reverse_iterator;
 			typedef _iterator<const_pointer>							const_iterator;
-			typedef _reverseiterator<const_iterator>				const_reverse_iterator;
+			typedef _reverseiterator<const_iterator>					const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
 			typedef size_t												size_type;
-			vector (const allocator_type& alloc = allocator_type())
+			explicit vector (const allocator_type& alloc = allocator_type())
 			{
 				_capacity = 0;
-				allocator_type_ = alloc;
+				allocator_type_ = alloc;// remember to do an explicite casting
 				_number_of_elements = 0;
 				vec = nullptr;
 			}
-			vector (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type())// parametrized 
+			explicit vector (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type())// parametrized 
 			{
 				allocator_type_ = alloc;// remember to do an explicite casting
 				vec = allocator_type_.allocate(n);
@@ -59,22 +59,18 @@ namespace ft
 					vec[i] = x.vec[i];
 				}
 			}
-			~vector()
-			{
-				allocator_type_.deallocate(vec,_capacity);
-			}
-			/* **************************iterators************************ */
-			iterator begin(){return(iterator(vec));};
-			iterator end(){return(iterator(&vec[_number_of_elements]));};
+			~vector(){allocator_type_.deallocate(vec,_capacity);}
+			iterator begin(){return(iterator(&vec[0]));};
 			const_iterator begin() const {return(const_iterator(&vec[0]));};
+			iterator end(){return(iterator(&vec[_number_of_elements]));};
 			const_iterator end() const {return(const_iterator(&vec[_number_of_elements]));};
 			reverse_iterator rend(){return(reverse_iterator(&vec[0]));};
 			reverse_iterator rbegin(){return(reverse_iterator(&vec[_number_of_elements]));};
 			const_reverse_iterator rend()const {return(const_reverse_iterator(&vec[0]));};
-			const_reverse_iterator rbegin()const {return(const_reverse_iterator(&vec[_number_of_elements - 1]));};
+			const_reverse_iterator rbegin()const {return(const_reverse_iterator(&vec[_number_of_elements]));};
 			/* **************************capacity************************ */
 			size_type size() const{
-			difference_type n = begin() - end();
+			difference_type n =end()- begin();
 				return(n);
 			};
 			size_type max_size() const{return(allocator_type_.max_size());};
@@ -130,14 +126,14 @@ namespace ft
 					arr._number_of_elements = size();
 					for(size_type i = 0; i< size(); i++ )
 						arr.vec[i]= vec[i];
-					allocator_type_.deallocate(vec,size());
 					swap(arr);
 				}
 			}
 			vector& operator= (const vector& x)
 			{
 				allocator_type_.deallocate(vec,size());
-					_capacity = x._capacity;
+				_capacity = x._capacity;
+				_number_of_elements = x._number_of_elements;
 				vec = allocator_type_.allocate(_capacity);
 				_number_of_elements = x._number_of_elements;
 				for(size_t i =0 ; i < size() ;i++)
@@ -194,21 +190,19 @@ namespace ft
 			}
 			void push_back (const value_type& val)
 			{
-				pointer arr;
 				if( _capacity == 0)
 					_capacity  = 1;
 				else if(size() + 1 > _capacity)
 					_capacity = _capacity * 2;
-				arr = allocator_type_.allocate(_capacity);
+				
+				vector<T,Alloc> new_vec(_capacity);
 				for(size_type i = 0 ; i< size() ; i++)
 				{
-					arr[i] = vec[i];
-					allocator_type_.destroy(vec + i);
+					new_vec[i] = vec[i];
 				}
-				arr[size()] = val;
-				allocator_type_.deallocate(vec, size());
-				vec = arr;
-				_number_of_elements = size() + 1;
+				new_vec[size()] = val;
+				new_vec._number_of_elements = size() +1;
+				swap(new_vec);
 			}
 			void pop_back()
 			{
@@ -223,41 +217,25 @@ namespace ft
 			}
 			iterator erase (iterator position)
 			{
-				pointer arr;
-				size_type first_part =position - begin();
-				size_type second_part = begin() - end();
-				arr = allocator_type_.allocate(_capacity);
-				for(size_t i = 0; i < first_part-1 ; i++)
-					arr[i] = vec[i];
-				for(size_t i = first_part; i < second_part ; i++)
-					arr[i] = vec[i+1];
-				allocator_type_.deallocate(vec,size());
-				_number_of_elements = size() - 1;
-				vec = allocator_type_.allocate(size());
-				for(size_type i = 0 ; i< size() ; i++)
-					vec[i] = arr[i];
-				allocator_type_.deallocate(arr,size());
+				iterator it = position;
+				while(it != end())
+				{
+					*it = *(it+1);
+					it++;
+				}
+				pop_back();
 				return(position++);
+
 			}
 			iterator erase (iterator first, iterator last)
 			{
-				pointer arr;
-				size_type size_to_erase = first - last;
-				size_type first_part = begin() - first;
-				size_type second_part = begin() - end();
-				arr = allocator_type_.allocate(_capacity);
-				size_t i;
-				for( i = 0; i < first_part ; i++)
-					arr[i] = vec[i];
-				for( i = i+0 ; i < second_part - size_to_erase + 1 ; i++)
-					arr[i] = vec[i + size_to_erase];
-				allocator_type_.deallocate(vec,size());
-				_number_of_elements = size() - size_to_erase;
-				vec = allocator_type_.allocate(size());
-				for(size_type i = 0 ; i< size() ; i++)
-					vec[i] = arr[i];
-				allocator_type_.deallocate(arr,size());
-				return(last++);
+				size_t size_ = last - first;
+				iterator it = first ;
+				for(size_t i = 0; i< size_; i++)
+				{
+					it = erase(it);
+				}
+				return(it);
 			}
 			template <class InputIterator>
   			void assign (InputIterator first, InputIterator last,typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
@@ -288,24 +266,24 @@ namespace ft
 			}
 			iterator insert (iterator position, const value_type& val)
 			{
-				iterator first = begin();
-				vector<T, Alloc> tmp;
+				vector <T,Alloc> tmp(size()+1);
 				tmp.reserve(_capacity);
-				while(first < position)
+				size_t size_b =position - begin();
+				size_t i =0;
+				iterator it;
+				while(i< size_b)
 				{
-					tmp.push_back(*first);
-					first++;
+					tmp[i] = vec[i];
+					i++;
 				}
-				size_type to_add = tmp.size();
-				tmp.push_back(val);
-				while(first < end())
+				tmp[i++] = val;
+				while(i<size()+1)
 				{
-			
-					tmp.push_back(*first);
-					first++;
+					tmp[i] = vec[i-1];
+					i++;
 				}
 				swap(tmp);
-				return(begin() + to_add);
+				return(begin()+size_b);
 			}
 			 void insert (iterator position, size_type n, const value_type& val)
 			 {
@@ -319,10 +297,9 @@ namespace ft
 			 template <class InputIterator>
     			void insert (iterator position, InputIterator first, InputIterator last,typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
 				{
-					while(first < last)
+					while(first != last)
 					{
 						position = insert(position, *first) +1;
-						
 						first++;
 					}
 				}
