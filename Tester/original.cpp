@@ -219,7 +219,7 @@ int main()
     std::cout << "Size of second: " << int (second.size()) << '\n';
     std::cout << "Size of third: " << int (third.size()) << '\n';}
     
-    std::cout << "- Add element at the end"<< std::endl;
+    // std::cout << "- Add element at the end"<< std::endl;
     // std::vector<int> myvector;
     // int myint;
     // std::cout << "Please enter some integers (enter 0 to end):\n";
@@ -229,18 +229,18 @@ int main()
     // } while (myint);
     // std::cout << "myvector stores " << int(myvector.size()) << " numbers.\n";
     
-    std::cout << "- Delete last element"<< std::endl;
-    std::vector<int> myvector;
-    int sum (0);
-    myvector.push_back (100);
-    myvector.push_back (200);
-    myvector.push_back (300);
-    while (!myvector.empty())
-    {
-        sum+=myvector.back();
-        myvector.pop_back();
-    }
-    std::cout << "The elements of myvector add up to " << sum << '\n';
+    // std::cout << "- Delete last element"<< std::endl;
+    // std::vector<int> myvector;
+    // int sum (0);
+    // myvector.push_back (100);
+    // myvector.push_back (200);
+    // myvector.push_back (300);
+    // while (!myvector.empty())
+    // {
+    //     sum+=myvector.back();
+    //     myvector.pop_back();
+    // }
+    // std::cout << "The elements of myvector add up to " << sum << '\n';
     
     std::cout << "- Clear content"<< std::endl;
    { std::vector<int> myvector;
@@ -498,70 +498,70 @@ int main()
     std::cout << ")." << std::endl;}
 
     //NOTE - operator<=
-    // std::stack <int> s1, s2, s3;
-    // s1.push( 5 );
-    // s1.push( 10 );
-    // s2.push( 1 );
-    // s2.push( 2 );
-    // s3.push( 5 );
-    // s3.push( 10 );
-    // if ( s1 <= s2 )
-    //     std::cout << "The stack s1 is less than or equal to "
-    //         << "the stack s2." << std::endl;
-    // else
-    //     std::cout << "The stack s1 is greater than "
-    //         << "the stack s2." << std::endl;
+   { std::stack <int> s1, s2, s3;
+    s1.push( 5 );
+    s1.push( 10 );
+    s2.push( 1 );
+    s2.push( 2 );
+    s3.push( 5 );
+    s3.push( 10 );
+    if ( s1 <= s2 )
+        std::cout << "The stack s1 is less than or equal to "
+            << "the stack s2." << std::endl;
+    else
+        std::cout << "The stack s1 is greater than "
+            << "the stack s2." << std::endl;
 
-    // if ( s1 <= s3 )
-    //     std::cout << "The stack s1 is less than or equal to "
-    //         << "the stack s3." << std::endl;
-    // else
-    //     std::cout << "The stack s1 is greater than "
-    //         << "the stack s3." << std::endl;
+    if ( s1 <= s3 )
+        std::cout << "The stack s1 is less than or equal to "
+            << "the stack s3." << std::endl;
+    else
+        std::cout << "The stack s1 is greater than "
+            << "the stack s3." << std::endl;}
 
     //NOTE - operator>
-    // std::stack <int, std::vector<int> > s1, s2, s3;
-    // s1.push( 1 );
-    // s1.push( 2 );
-    // s1.push( 3 );
-    // s2.push( 5 );
-    // s2.push( 10 );
-    // s3.push( 1 );
-    // s3.push( 2 );
-    // if ( s1 > s2 )
-    //     std::cout << "The stack s1 is greater than "
-    //         << "the stack s2." << std::endl;
-    // else
-    //     std::cout << "The stack s1 is not greater than "
-    //         << "the stack s2." << std::endl;
+    {std::stack <int, std::vector<int> > s1, s2, s3;
+    s1.push( 1 );
+    s1.push( 2 );
+    s1.push( 3 );
+    s2.push( 5 );
+    s2.push( 10 );
+    s3.push( 1 );
+    s3.push( 2 );
+    if ( s1 > s2 )
+        std::cout << "The stack s1 is greater than "
+            << "the stack s2." << std::endl;
+    else
+        std::cout << "The stack s1 is not greater than "
+            << "the stack s2." << std::endl;
 
-    // if ( s1 > s3 )
-    //     std::cout << "The stack s1 is greater than "
-    //         << "the stack s3." << std::endl;
-    // else
-    //     std::cout << "The stack s1 is not greater than "
-    //         << "the stack s3." << std::endl;
+    if ( s1 > s3 )
+        std::cout << "The stack s1 is greater than "
+            << "the stack s3." << std::endl;
+    else
+        std::cout << "The stack s1 is not greater than "
+            << "the stack s3." << std::endl;}
 
     //NOTE - operator>=
-    // std::stack <int, std::vector<int> > s1, s2, s3;
-    // s1.push( 1 );
-    // s1.push( 2 );
-    // s2.push( 5 );
-    // s2.push( 10 );
-    // s3.push( 1 );
-    // s3.push( 2 );
-    // if ( s1 >= s2 )
-    //     std::cout << "The stack s1 is greater than or equal to "
-    //         << "the stack s2." << std::endl;
-    // else
-    //     std::cout << "The stack s1 is less than "
-    //         << "the stack s2." << std::endl;
+    {std::stack <int, std::vector<int> > s1, s2, s3;
+    s1.push( 1 );
+    s1.push( 2 );
+    s2.push( 5 );
+    s2.push( 10 );
+    s3.push( 1 );
+    s3.push( 2 );
+    if ( s1 >= s2 )
+        std::cout << "The stack s1 is greater than or equal to "
+            << "the stack s2." << std::endl;
+    else
+        std::cout << "The stack s1 is less than "
+            << "the stack s2." << std::endl;
 
-    // if ( s1>= s3 )
-    //     std::cout << "The stack s1 is greater than or equal to "
-    //         << "the stack s3." << std::endl;
-    // else
-    //     std::cout << "The stack s1 is less than "
-    //         << "the stack s3." << std::endl;
-
+    if ( s1>= s3 )
+        std::cout << "The stack s1 is greater than or equal to "
+            << "the stack s3." << std::endl;
+    else
+        std::cout << "The stack s1 is less than "
+            << "the stack s3." << std::endl;
+}
 }

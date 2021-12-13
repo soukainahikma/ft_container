@@ -37,18 +37,52 @@ void print_vector(NS::vector<T> &vect, char const *label)
 }
 int main()
 {
-	std::cout << "- Erase elements" << std::endl;
-    {NS::vector<int> myvector1;
-    for (int i=1; i<=10; i++) myvector1.push_back(i);
-    std::cout << myvector1.size() << std::endl;
-    std::cout << myvector1.capacity() << std::endl;
-    myvector1.erase (myvector1.begin() - 1);
-    myvector1.erase (myvector1.begin(),myvector1.begin()+3);
-    std::cout << myvector1.size() << std::endl;
-    std::cout << myvector1.capacity() << std::endl;
-    std::cout << "myvector contains:";
-    for (unsigned i=0; i<myvector1.size(); ++i)
-        std::cout << ' ' << myvector1[i];
-    std::cout << std::endl;
-    }
+	{
+		std::cout<<"this the first test "<< std::endl;
+	NS::vector<int> myvector(3, 100);
+	std::cout << myvector.size() << std::endl;
+	std::cout << myvector.capacity() << std::endl;
+	NS::vector<int>::iterator it;
+	it = myvector.begin();
+	it = myvector.insert ( it , 200 );
+	myvector.insert (it,2,300);
+	it = myvector.begin();
+	NS::vector<int> anothervector (2,400);
+	std::cout << "THIS IS SIZE  " << myvector.size() << std::endl;
+	std::cout << "THIS IS CAPACITY " << myvector.capacity() << std::endl;
+	myvector.insert (it+2,anothervector.begin(),anothervector.end());
+	std::cout << "THIS IS SIZE  " << myvector.size() << std::endl;
+	std::cout << "THIS IS CAPACITY " << myvector.capacity() << std::endl;
+	int myarray [] = { 501,502,503 };
+	myvector.insert (myvector.begin(), myarray, myarray+3);
+	std::cout << "THIS IS SIZE  " << myvector.size() << std::endl;
+	std::cout << "THIS IS CAPACITY " << myvector.capacity() << std::endl;
+	std::cout << "myvector contains:";
+	for (it=myvector.begin(); it<myvector.end(); it++)
+	std::cout << ' ' << *it;
+	std::cout << '\n';
+	}
+	{
+		std::cout << "\ncapacity()" << std::endl;
+		std::cout << "=======================================" << std::endl;
+		NS::vector<size_t> vec(50, 500);
+		NS::vector<size_t> myvect(4, 100);
+		std::cout<< "here ----------------------------" <<std::endl;
+		std::cout << "myvect.capacity() is: " << myvect.capacity() << '\n';
+		std::cout << "myvect.size() is: " << myvect.size() << '\n';
+
+		myvect.push_back(200);
+		std::cout << "myvect.capacity() is: " << myvect.capacity() << '\n';
+		std::cout << "myvect.size() is: " << myvect.size() << '\n';
+		
+		myvect.insert(myvect.begin(), vec.begin(), vec.end());
+
+		std::cout << "myvect.capacity() is: " << myvect.capacity() << '\n';
+		std::cout << "myvect.size() is: " << myvect.size() << '\n';
+
+		myvect.push_back(200);
+		std::cout << "myvect.capacity() is: " << myvect.capacity() << '\n';
+		std::cout << "myvect.size() is: " << myvect.size() << '\n';
+		std::cout << "=======================================" << std::endl;
+	}
 }

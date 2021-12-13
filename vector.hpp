@@ -2,8 +2,6 @@
 #define VECTOR_HPP
 #include <iostream>
 #include "iterator.hpp"
-// #include"my_traits.hpp"
-
 
 namespace ft
 {
@@ -43,7 +41,7 @@ namespace ft
 			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
 			{
 				allocator_type_ = alloc;
-				_number_of_elements = distance_(first,last);
+				_number_of_elements = last - first;
 				_capacity = _number_of_elements;
 				vec = allocator_type_.allocate(_capacity);
 				for (size_t i = 0; i < _number_of_elements; i++)
@@ -68,7 +66,6 @@ namespace ft
 			reverse_iterator rbegin(){return(reverse_iterator(&vec[_number_of_elements]));};
 			const_reverse_iterator rend()const {return(const_reverse_iterator(&vec[0]));};
 			const_reverse_iterator rbegin()const {return(const_reverse_iterator(&vec[_number_of_elements]));};
-			/* **************************capacity************************ */
 			size_type size() const{
 			difference_type n =end()- begin();
 				return(n);
@@ -122,6 +119,8 @@ namespace ft
 			{
 				if(n > _capacity)
 				{
+					if(n< _capacity * 2)
+						n = _capacity *2;
 					vector<T> arr(n);
 					arr._number_of_elements = size();
 					for(size_type i = 0; i< size(); i++ )
@@ -266,24 +265,24 @@ namespace ft
 			}
 			iterator insert (iterator position, const value_type& val)
 			{
-				vector <T,Alloc> tmp(size()+1);
+				iterator first = begin();
+				vector<T, Alloc> tmp;
 				tmp.reserve(_capacity);
-				size_t size_b =position - begin();
-				size_t i =0;
-				iterator it;
-				while(i< size_b)
+				while(first < position)
 				{
-					tmp[i] = vec[i];
-					i++;
+					tmp.push_back(*first);
+					first++;
 				}
-				tmp[i++] = val;
-				while(i<size()+1)
+				size_type to_add = tmp.size();
+				tmp.push_back(val);
+				while(first < end())
 				{
-					tmp[i] = vec[i-1];
-					i++;
+			
+					tmp.push_back(*first);
+					first++;
 				}
 				swap(tmp);
-				return(begin()+size_b);
+				return(begin() + to_add);
 			}
 			 void insert (iterator position, size_type n, const value_type& val)
 			 {
@@ -297,24 +296,16 @@ namespace ft
 			 template <class InputIterator>
     			void insert (iterator position, InputIterator first, InputIterator last,typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
 				{
+					difference_type diff = last - first;
+					difference_type diff1 = position - begin();
+					reserve(size() + diff);
+					position = begin() + diff1; 
 					while(first != last)
 					{
 						position = insert(position, *first) +1;
 						first++;
 					}
 				}
-				
-			int distance_(iterator first, iterator last)
-			{
-				int i = 0;
-				iterator tmp = first;
-				while(tmp != last)
-				{
-					tmp++;
-					i++;
-				}
-				return(i);
-			}
 		private:
 			allocator_type	allocator_type_;
 			pointer vec;
@@ -346,7 +337,7 @@ template <class InputIterator1, class InputIterator2>
   bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
 {
  while (first1!=last1) {
-    if (!(*first1 == *first2))   // or: if (!pred(*first1,*first2)), for version 2
+    if (!(*first1 == *first2))
       return false;
     ++first1; ++first2;
   }
