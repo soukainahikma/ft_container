@@ -46,9 +46,10 @@ namespace ft
 			typedef avl_tree<value_type, key_compare,allocator_type>			__base;
 		public:
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):
-			allocator_type_(alloc),my_avl_tree(),comp(comp){}
+			comp(comp),allocator_type_(alloc),my_avl_tree(){}
 			template <class InputIterator>
-  			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(),typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
+  			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(),
+			  typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0):comp(comp),allocator_type_(alloc)
 			{
 				while(first != last)
 				{
@@ -238,9 +239,9 @@ namespace ft
 			// 	my_avl_tree.print_preorder();
 			// }
 		private:
+			key_compare comp;
 			allocator_type allocator_type_;
 			__base my_avl_tree;
-			key_compare comp;
 	};
 };
 #endif
