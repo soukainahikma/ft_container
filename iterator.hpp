@@ -19,7 +19,7 @@ namespace ft
 				{
 					return(ptr_toIter);
 				}
-				_iterator(){ptr_toIter = NULL};
+				_iterator(){ptr_toIter = NULL;};
 				_iterator(iterator_type ptr)
 				{
 					ptr_toIter = ptr;
@@ -146,7 +146,7 @@ namespace ft
 				{
 					return(ptr_toIter);
 				}
-				_reverseiterator(){ptr_toIter = NULL};
+				_reverseiterator(){ptr_toIter = NULL;};
 				_reverseiterator(iterator_type it) : ptr_toIter(it){};
 				template<class Iter>
 				_reverseiterator(const _reverseiterator<Iter>& rev_it)

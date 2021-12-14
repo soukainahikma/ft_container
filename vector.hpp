@@ -28,7 +28,7 @@ namespace ft
 				_number_of_elements = 0;
 				vec = nullptr;
 			}
-			explicit vector (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type())// parametrized 
+			explicit vector (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type())
 			{
 				allocator_type_ = alloc;
 				vec = allocator_type_.allocate(n);
@@ -68,7 +68,7 @@ namespace ft
 			const_reverse_iterator rend()const {return(const_reverse_iterator(&vec[0]));};
 			const_reverse_iterator rbegin()const {return(const_reverse_iterator(&vec[_number_of_elements]));};
 			size_type size() const{
-			difference_type n =end()- begin();
+			difference_type n = end()- begin();
 				return(n);
 			};
 			size_type max_size() const{return(allocator_type_.max_size());};
