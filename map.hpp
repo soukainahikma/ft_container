@@ -22,7 +22,6 @@ namespace ft
 			typedef typename ft::node<value_type>*									pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
 			typedef tree_iterator<value_type, pointer>								iterator;
-			//come back here for const in the pointer
 			typedef tree_iterator<const value_type, pointer>						const_iterator;
 			typedef ft::_reverseiterator<iterator>									reverse_iterator;
 			typedef ft::_reverseiterator<const_iterator>							const_reverse_iterator;
@@ -234,10 +233,6 @@ namespace ft
 			key_compare key_comp() const{return(comp);}
 			value_compare value_comp() const {return(value_compare(comp));}
 			allocator_type get_allocator() const{return(allocator_type_);}
-			// void avl_printer()
-			// {
-			// 	my_avl_tree.print_preorder();
-			// }
 		private:
 			key_compare comp;
 			allocator_type allocator_type_;

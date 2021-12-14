@@ -18,7 +18,6 @@ namespace ft
 		tree_iterator(){};
 		tree_iterator(node_type node)
 		{
-			//fix me (think about the deep copy)
 			node_ = node;
 		}
 		node_type base()
@@ -109,7 +108,6 @@ namespace ft
 				}
 				return(y);
 			}
-
 	};
 }
 #endif

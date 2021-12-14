@@ -179,10 +179,8 @@ namespace ft
 					root->left = NULL;
 					root->right = NULL;
 					root->height = 1;
-					// end_node = allocator_type_.allocate(1);
 					bsize++;
 				}
-				//FIXME end node
 				else
 					root = insert(key,root);
 				root->parent = end_node;

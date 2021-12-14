@@ -24,13 +24,13 @@ namespace ft
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{
 				_capacity = 0;
-				allocator_type_ = alloc;// remember to do an explicite casting
+				allocator_type_ = alloc;
 				_number_of_elements = 0;
 				vec = nullptr;
 			}
 			explicit vector (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type())// parametrized 
 			{
-				allocator_type_ = alloc;// remember to do an explicite casting
+				allocator_type_ = alloc;
 				vec = allocator_type_.allocate(n);
 				_number_of_elements = n;
 				for (size_type i = 0; i < n; i++)
@@ -38,7 +38,8 @@ namespace ft
 				_capacity = n;
 			}
 			template <class InputIterator>
-			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
+			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
 			{
 				allocator_type_ = alloc;
 				_number_of_elements = last - first;
@@ -171,7 +172,6 @@ namespace ft
 			{
 				return(*this->begin());
 			}
-
 			reference back()
 			{
 				return(*(this->end() - 1));
@@ -224,7 +224,6 @@ namespace ft
 				}
 				pop_back();
 				return(position++);
-
 			}
 			iterator erase (iterator first, iterator last)
 			{
@@ -237,7 +236,8 @@ namespace ft
 				return(it);
 			}
 			template <class InputIterator>
-  			void assign (InputIterator first, InputIterator last,typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
+			void assign (InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
 			{
 				size_type sizeOfVec = size();
 				vector<T, Alloc> tmp(first,last);
@@ -294,7 +294,8 @@ namespace ft
 				 }
 			 }
 			 template <class InputIterator>
-    			void insert (iterator position, InputIterator first, InputIterator last,typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
+				void insert (iterator position, InputIterator first, InputIterator last,
+						typename ft::enable_if<!ft::is_integral<InputIterator>::value,bool>::type = 0)
 				{
 					difference_type diff = last - first;
 					difference_type diff1 = position - begin();
@@ -313,67 +314,69 @@ namespace ft
 			size_type _capacity;
 
 	};
-	template <class T, class Alloc >
-	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
-	{
-		vector<T,Alloc> tmp;
-		tmp = x;
-		x = y;
-		y = tmp;
-	}
-	template <class InputIterator1, class InputIterator2>
-  bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
-								InputIterator2 first2, InputIterator2 last2)
-	{
-	   while (first1!=last1)
-  {
-    if (first2==last2 || *first2<*first1) return false;
-    else if (*first1<*first2) return true;
-    ++first1; ++first2;
-  }
-  return (first2!=last2);
-	}
-template <class InputIterator1, class InputIterator2>
-  bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
+template <class T, class Alloc >
+void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
 {
- while (first1!=last1) {
-    if (!(*first1 == *first2))
-      return false;
-    ++first1; ++first2;
-  }
-  return true;
+	vector<T,Alloc> tmp;
+	tmp = x;
+	x = y;
+	y = tmp;
+}
+template <class InputIterator1, class InputIterator2>
+bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
+							InputIterator2 first2, InputIterator2 last2)
+{
+	while (first1!=last1)
+	{
+		if (first2==last2 || *first2<*first1)
+			return false;
+		else if (*first1<*first2)
+			return true;
+		++first1; ++first2;
+	}
+	return (first2!=last2);
+}
+template <class InputIterator1, class InputIterator2>
+bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
+{
+while (first1!=last1) 
+{
+	if (!(*first1 == *first2))
+		return false;
+	++first1; ++first2;
+}
+return true;
 }
 template <class T, class Alloc>
-  bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-  {
-	  return(lhs.size() == rhs.size() && equal(lhs.begin(),lhs.end(),rhs.begin()));
-  }
-  template <class T, class Alloc>
-  bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-  {
-	  return(!(lhs == rhs));
-  }
-  template <class T, class Alloc>
-  bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-  {
-	  return(lexicographical_compare(lhs.begin(),lhs.end(),rhs.begin(),rhs.end()));
-  }
-  template <class T, class Alloc>
-  bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-  {
-	  return(!(rhs < lhs));
-  }
-  template <class T, class Alloc>
-  bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-  {
-	  return(rhs<lhs);
-  }
-  template <class T, class Alloc>
-  bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-  {
-	  return(!(lhs < rhs));
-  }
+bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return(lhs.size() == rhs.size() && equal(lhs.begin(),lhs.end(),rhs.begin()));
 }
-
+template <class T, class Alloc>
+bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return(!(lhs == rhs));
+}
+template <class T, class Alloc>
+bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return(lexicographical_compare(lhs.begin(),lhs.end(),rhs.begin(),rhs.end()));
+}
+template <class T, class Alloc>
+bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return(!(rhs < lhs));
+}
+template <class T, class Alloc>
+bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return(rhs<lhs);
+}
+template <class T, class Alloc>
+bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return(!(lhs < rhs));
+}
+}
 
 #endif

@@ -13,7 +13,7 @@ namespace ft
 			typedef T					value_type;
 			typedef size_t				size_type;
 			stack():c(){};
-			stack (const container_type& ctnr):c(ctnr){};
+			explicit stack (const container_type& ctnr):c(ctnr){};
 			bool empty() const{return(c.empty());};
 			size_type size() const {return(c.size());};
 			value_type& top(){return(c.back());};

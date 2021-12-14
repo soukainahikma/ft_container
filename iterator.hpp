@@ -19,8 +19,8 @@ namespace ft
 				{
 					return(ptr_toIter);
 				}
-				_iterator(){};
-				_iterator(iterator_type ptr)// parametrized constructor
+				_iterator(){ptr_toIter = NULL};
+				_iterator(iterator_type ptr)
 				{
 					ptr_toIter = ptr;
 				};
@@ -91,33 +91,33 @@ namespace ft
 			private:
 				iterator_type ptr_toIter;
 	};
-	template <class Iterator>
-	bool operator== (const _iterator<Iterator>& lhs,const _iterator<Iterator>& rhs)
+	template <class U,class V>
+	bool operator== (const _iterator<U>& lhs,const _iterator<V>& rhs)
 	{
 		return(lhs.base() == rhs.base());
 	};
-	template <class Iterator>
-	bool operator!= (const _iterator<Iterator>& lhs,const _iterator<Iterator>& rhs)
+	template <class U,class V>
+	bool operator!= (const _iterator<U>& lhs,const _iterator<V>& rhs)
 	{
 		return(lhs.base() != rhs.base());
 	};
-	template <class Iterator>
-	bool operator<  (const _iterator<Iterator>& lhs,const _iterator<Iterator>& rhs)
+	template <class U,class V>
+	bool operator<  (const _iterator<U>& lhs,const _iterator<V>& rhs)
 	{
 		return(lhs.base() < rhs.base());
 	};
-	template <class Iterator>
-	bool operator<= (const _iterator<Iterator>& lhs,const _iterator<Iterator>& rhs)
+	template <class U,class V>
+	bool operator<= (const _iterator<U>& lhs,const _iterator<V>& rhs)
 	{
 			return(lhs.base() <= rhs.base());
 	};
-	template <class Iterator>
-	bool operator>  (const _iterator<Iterator>& lhs, const _iterator<Iterator>& rhs)
+	template <class U,class V>
+	bool operator>  (const _iterator<U>& lhs, const _iterator<V>& rhs)
 	{
 		return(lhs.base() > rhs.base());
 	};
-	template <class Iterator>
-	bool operator>= (const _iterator<Iterator>& lhs, const _iterator<Iterator>& rhs)
+	template <class U,class V>
+	bool operator>= (const _iterator<U>& lhs, const _iterator<V>& rhs)
 	{
 		return(lhs.base() >= rhs.base());
 	};
@@ -146,11 +146,8 @@ namespace ft
 				{
 					return(ptr_toIter);
 				}
-				_reverseiterator(){/* ask if i have to fill default constructor */};
-				_reverseiterator(iterator_type it) : ptr_toIter(it)
-				{
-					// this->ptr_toIter = it;
-				};
+				_reverseiterator(){ptr_toIter = NULL};
+				_reverseiterator(iterator_type it) : ptr_toIter(it){};
 				template<class Iter>
 				_reverseiterator(const _reverseiterator<Iter>& rev_it)
 				{
