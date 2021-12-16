@@ -178,7 +178,7 @@ namespace ft
 			}
 			const_reference back() const
 			{
-				return(*this->end());
+				return(*this->end() - 1);
 			}
 			void swap (vector& x)
 			{
